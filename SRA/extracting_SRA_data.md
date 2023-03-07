@@ -1,3 +1,5 @@
+### 1. Set up
+Collect together a list of accession numbers for all of the projects where SRA data is availible for download.
 ```text
 PRJNA836755
 PRJNA701233
@@ -17,19 +19,23 @@ PRJNA774191
 PRJNA647391
 PRJNA766716
 ```
-text
+
+Add these to a text file. Leave an empty line at the bottom.
+
 ```console
 cd fastq
 
 cat > prja_list.txt
-# insert list of accession numbers for projects availible on SRA
+# Insert list of accession numbers for projects availible on SRA
 ```
+
+Make a directory for each project accession number.
 
 ```console
 while read p; do mkdir "$p"; done < prja_list.txt
 ```
 
-Add some text here...
+### 2. Download metadata file for each project accession
 
 ```console
 # Get metadata for each entry
