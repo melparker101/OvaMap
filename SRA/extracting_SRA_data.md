@@ -102,3 +102,10 @@ The output should look like this:
 |   `-- PRJNA879764_SraRunTable.txt
 `-- prja_list.txt
 ```
+
+# 3. Manually filter metadata tables to only contain samples/runs that we want
+The SRA Run tables we downloaded do not contain the 'tissue_type' column from the metadata table on the SRA website. There are a few ways to extract this extra data using the command line see [https://bioinformatics.stackexchange.com/questions/7027/how-to-extract-metadata-from-ncbis-short-read-archive-sra-for-a-few-runs](link). I found the easiest way was to use the package pysradb.
+```bash
+pip install pysradb
+pysradb metadata SRP338994
+```
