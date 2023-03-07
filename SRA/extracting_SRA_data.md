@@ -64,3 +64,41 @@ Check that this has worked.
 tree .
 ```
 
+The output should look like this:
+```bash
+|-- PRJNA153427
+|   `-- PRJNA153427_SraRunTable.txt
+|-- PRJNA189204
+|   `-- PRJNA189204_SraRunTable.txt
+|-- PRJNA315404
+|   `-- PRJNA315404_SraRunTable.txt
+|-- PRJNA340388
+|   `-- PRJNA340388_SraRunTable.txt
+|-- PRJNA421274
+|   `-- PRJNA421274_SraRunTable.txt
+|-- PRJNA484542
+|   `-- PRJNA484542_SraRunTable.txt
+|-- PRJNA514416
+|   `-- PRJNA514416_SraRunTable.txt
+|-- PRJNA552816
+|   `-- PRJNA552816_SraRunTable.txt
+|-- PRJNA647391
+|   `-- PRJNA647391_SraRunTable.txt
+|-- PRJNA701233
+|   `-- PRJNA701233_SraRunTable.txt
+|-- PRJNA754050
+|   `-- PRJNA754050_SraRunTable.txt
+|-- PRJNA766716
+|   `-- PRJNA766716_SraRunTable.txt
+|-- PRJNA774191
+|   `-- PRJNA774191_SraRunTable.txt
+|-- PRJNA792835
+|   `-- PRJNA792835_SraRunTable.txt
+|-- PRJNA836755
+|   `-- PRJNA836755_SraRunTable.txt
+|-- PRJNA849410
+|   `-- PRJNA849410_SraRunTable.txt
+|-- PRJNA879764
+|   `-- PRJNA879764_SraRunTable.txt
+`-- prja_list.txt
+```
