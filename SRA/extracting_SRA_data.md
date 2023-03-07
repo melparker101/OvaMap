@@ -17,7 +17,7 @@ PRJNA774191
 PRJNA647391
 PRJNA766716
 ```
-
+text
 ```console
 cd fastq
 
