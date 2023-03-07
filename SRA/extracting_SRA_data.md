@@ -51,7 +51,7 @@ export PATH=${PATH}:"$MYDIR"/software/edirect
 ```
 
 Get metadata for each entry.
-```console
+```bash
 cd "$MYDIR"/ovaMap/fastq
 
 for p in P*
