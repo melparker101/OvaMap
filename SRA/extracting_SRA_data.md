@@ -43,7 +43,6 @@ sh -c "$(curl -fsSL ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edire
 
 # Move it to software directory
 mv edirect "$MYDIR"/software/
-done 
 ```
 
 Add the following line to .bashrc.
@@ -63,6 +62,5 @@ done
 Check that this has worked.
 ```console
 tree .
-done 
 ```
 
