@@ -67,9 +67,7 @@ do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.
 done 
 ```
 
-```zsh
-cd "$MYDIR"/ovaMap/fastq
-
+```{r, engine='bash', count_lines}
 for p in P*
 do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.txt
 done 
