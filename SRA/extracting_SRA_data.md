@@ -21,7 +21,7 @@ PRJNA766716
 ```
 
 Add these to a text file. Leave an empty line at the bottom.
-```console
+```bash
 cd "$MYDIR"/ovaMap/fastq
 
 cat > prja_list.txt
@@ -29,13 +29,13 @@ cat > prja_list.txt
 ```
 
 Make a directory for each project accession number.
-```console
+```bash
 while read p; do mkdir "$p"; done < prja_list.txt
 ```
 
 ### 2. Download metadata file for each project accession
 Install EDirect software from NCBI.
-```console
+```bash
 cd ~
 
 # This downloads into homefile automatically
@@ -46,7 +46,7 @@ mv edirect "$MYDIR"/software/
 ```
 
 Add the following line to .bashrc.
-```console
+```bash
 export PATH=${PATH}:"$MYDIR"/software/edirect
 ```
 
@@ -59,22 +59,8 @@ do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.
 done 
 ```
 
-```sh
-cd "$MYDIR"/ovaMap/fastq
-
-for p in P*
-do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.txt
-done 
-```
-
-```posh
-for p in P*
-do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.txt
-done 
-```
-
 Check that this has worked.
-```console
+```bash
 tree .
 ```
 
