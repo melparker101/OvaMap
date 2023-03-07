@@ -67,7 +67,7 @@ do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.
 done 
 ```
 
-```{r, engine='bash', count_lines}
+```posh
 for p in P*
 do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.txt
 done 
