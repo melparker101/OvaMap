@@ -36,9 +36,8 @@ while read p; do mkdir "$p"; done < prja_list.txt
 ```
 
 ### 2. Download metadata file for each project accession
-
+Get metadata for each entry.
 ```console
-# Get metadata for each entry
 for p in P*
 do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.txt
 done 
