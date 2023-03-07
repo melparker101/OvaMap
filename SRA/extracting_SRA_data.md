@@ -59,6 +59,22 @@ do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.
 done 
 ```
 
+```sh
+cd "$MYDIR"/ovaMap/fastq
+
+for p in P*
+do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.txt
+done 
+```
+
+```zsh
+cd "$MYDIR"/ovaMap/fastq
+
+for p in P*
+do esearch -db sra -query "$p" | efetch -format runinfo > "$p"/"$p"_SraRunTable.txt
+done 
+```
+
 Check that this has worked.
 ```console
 tree .
