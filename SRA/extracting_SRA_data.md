@@ -33,7 +33,7 @@ Make a directory for each project accession number.
 while read p; do mkdir "$p"; done < prja_list.txt
 ```
 
-### 2. Download metadata file for each project accession
+# 2. Download metadata file for each project accession
 Install EDirect software from NCBI.
 ```bash
 cd ~
@@ -106,6 +106,13 @@ The output should look like this:
 # 3. Manually filter metadata tables to only contain samples/runs that we want
 The SRA Run tables we downloaded do not contain the 'tissue_type' column from the metadata table on the SRA website. There are a few ways to extract the extra data using the command line see [https://bioinformatics.stackexchange.com/questions/7027/how-to-extract-metadata-from-ncbis-short-read-archive-sra-for-a-few-runs](link). I found the easiest way was to use the package pysradb. Save the data in a tsv file to avoid formatting issues. Use the detailed arguement to ensure metadata for all runs are downloaded.
 
+| Project       | Filtering requirements | Done? |
+| :-----------: |:----------------------:| :----:|
+| PRJNA766716   | exclude cancer samples | Y     |
+| col 2 is      | exclude snATAC samples |   N   |
+|               |                        |    N  |
+
+
 ### PRJNA766716
 
 ```bash
@@ -115,6 +122,33 @@ pysradb metadata PRJNA766716 --detailed --saveto PRJNA766716_PysradbTable.tsv
 ```
 Filter for PRJNA766716 to exclude cancer samples:
 
+```R
+library(data.table)
+library(dplyr)
+
+# Read in data
+pysradb_table = data.table::fread(paste0("PRJNA766716_PysradbTable.tsv"),data.table = F)
+sra_table = data.table::fread(paste0("PRJNA766716_SraRunTable.txt"),data.table = F)
+
+# Replace spaces with underscores in colnames of pysradb table
+colnames(pysradb_table) <- sub(" ", "_", colnames(pysradb_table))
+
+# Extract run accession numbers for normal samples only (not cancer) and filter using these
+run_acc <- pysradb_table[pysradb_table$tissue_type %like% "Normal", "run_accession"]
+sra_table <- filter(sra_table, Run %in% run_acc)
+
+# Write to file, replacing the original
+write.table(sra_table, file='PRJNA766716_SraRunTable.txt', quote=FALSE, sep='\t')
+```
+
+### PRJNA836755
+Download the extra metadata table:
+```bash
+cd ../PRJNA836755
+
+pysradb metadata PRJNA836755 --detailed --saveto PRJNA836755_PysradbTable.tsv
+```
+Again, filter using R:
 ```R
 library(data.table)
 library(dplyr)
