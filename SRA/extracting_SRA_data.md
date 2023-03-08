@@ -104,11 +104,22 @@ The output should look like this:
 # 3. Manually filter metadata tables to only contain samples/runs that we want
 The SRA Run tables we downloaded do not contain the 'tissue_type' column from the metadata table on the SRA website. There are a few ways to extract the extra data using the command line see [https://bioinformatics.stackexchange.com/questions/7027/how-to-extract-metadata-from-ncbis-short-read-archive-sra-for-a-few-runs](link). I found the easiest way was to use the package pysradb. Save the data in a tsv file to avoid formatting issues. Use the detailed arguement to ensure metadata for all runs are downloaded.
 
-| Project acc.  | Filtering requirements | Done? |
-| :-----------: |:----------------------:| :----:|
-| PRJNA766716   | exclude cancer samples |   Y   |
-| PRJNA836755   | exclude snATAC samples |   N   |
-|               |                        |   N   |
+| Project acc.  | Filtering Required? | Filtering requirements    | 
+| :-----------: |:-------------------:| :------------------------:|
+| PRJNA766716   |            Y        | Disgard cancer samples    |
+| PRJNA836755   |            Y        | Disgard snATAC runs       |
+| PRJNA701233   |            N        | NA                        |
+| PRJNA792835   |            Y        | Disgard scATAC runs       |   
+| PRJNA754050   |            Y        | Disgard cancer samples    |
+| PRJNA421274   |            N        | NA                        |
+| PRJNA484542   |            N        | NA                        |
+| PRJNA514416   |            N        | No for now                |
+| PRJNA189204   |                     |                           |
+| PRJNA153427   |                     |                           |
+| PRJNA879764   |                     |                           |
+| PRJNA849410   |                     |                           |
+| PRJNA774191   |                     |                           |
+| PRJNA647391   |                     |                           |
 
 
 ### PRJNA766716
@@ -193,6 +204,8 @@ sra_table <- sra_table[sra_table$Run == "SRR15424680",]
 # Write to file, replacing the original
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
+### PRJNA552816
+
 ### PRJNA189204
 These samples contain both human and mouse and a variety of different cells types (most of which are embryos). 
 ```bash
@@ -223,3 +236,7 @@ sra_table <- filter(sra_table, Run %in% run_acc)
 # Write to file, replacing the original
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
+
+
+
+
