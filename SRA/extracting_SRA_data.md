@@ -110,3 +110,23 @@ pip install pysradb
 
 pysradb metadata SRP338994
 ```
+Filter for RJNA766716 to exclude cancer samples:
+
+```R
+library(data.table)
+library(dplyr)
+
+# Read in data
+pysradb_table = data.table::fread(paste0("PRJNA766716_PysradbTable.tsv"),data.table = F)
+sra_table = data.table::fread(paste0("PRJNA766716_SraRunTable.txt"),data.table = F)
+
+# Replace spaces with underscores in colnames of pysradb table
+colnames(pysradb_table) <- sub(" ", "_", colnames(pysradb_table))
+
+# Extract run accession numbers for normal samples only (not cancer) and filter using these
+run_acc <- pysradb_table[pysradb_table$tissue_type %like% "Normal", "run_accession"]
+sra_table <- filter(sra_table, Run %in% run_acc)
+
+# Write to file, replacing the original
+write.table(sra_table, file='PRJNA766716_SraRunTable.txt', quote=FALSE, sep='\t')
+```
