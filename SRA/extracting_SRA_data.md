@@ -5,10 +5,8 @@ PRJNA836755
 PRJNA701233
 PRJNA792835
 PRJNA754050
-PRJNA340388
 PRJNA421274
 PRJNA484542
-PRJNA315404
 PRJNA514416
 PRJNA189204
 PRJNA552816
@@ -106,11 +104,11 @@ The output should look like this:
 # 3. Manually filter metadata tables to only contain samples/runs that we want
 The SRA Run tables we downloaded do not contain the 'tissue_type' column from the metadata table on the SRA website. There are a few ways to extract the extra data using the command line see [https://bioinformatics.stackexchange.com/questions/7027/how-to-extract-metadata-from-ncbis-short-read-archive-sra-for-a-few-runs](link). I found the easiest way was to use the package pysradb. Save the data in a tsv file to avoid formatting issues. Use the detailed arguement to ensure metadata for all runs are downloaded.
 
-| Project       | Filtering requirements | Done? |
+| Project acc.  | Filtering requirements | Done? |
 | :-----------: |:----------------------:| :----:|
-| PRJNA766716   | exclude cancer samples | Y     |
-| col 2 is      | exclude snATAC samples |   N   |
-|               |                        |    N  |
+| PRJNA766716   | exclude cancer samples |   Y   |
+| PRJNA836755   | exclude snATAC samples |   N   |
+|               |                        |   N   |
 
 
 ### PRJNA766716
@@ -118,7 +116,8 @@ The SRA Run tables we downloaded do not contain the 'tissue_type' column from th
 ```bash
 # pip install pysradb
 
-pysradb metadata PRJNA766716 --detailed --saveto PRJNA766716_PysradbTable.tsv
+cd PRJNA766716
+pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv
 ```
 Filter for PRJNA766716 to exclude cancer samples:
 
@@ -126,9 +125,13 @@ Filter for PRJNA766716 to exclude cancer samples:
 library(data.table)
 library(dplyr)
 
+# Extract project name from directory name
+fullpath = getwd()
+prjna = basename(fullpath)
+
 # Read in data
-pysradb_table = data.table::fread(paste0("PRJNA766716_PysradbTable.tsv"),data.table = F)
-sra_table = data.table::fread(paste0("PRJNA766716_SraRunTable.txt"),data.table = F)
+pysradb_table = data.table::fread(paste0(prjna,"_PysradbTable.tsv"),data.table = F)
+sra_table = data.table::fread(paste0(prjna,"_SraRunTable.txt"),data.table = F)
 
 # Replace spaces with underscores in colnames of pysradb table
 colnames(pysradb_table) <- sub(" ", "_", colnames(pysradb_table))
@@ -138,32 +141,85 @@ run_acc <- pysradb_table[pysradb_table$tissue_type %like% "Normal", "run_accessi
 sra_table <- filter(sra_table, Run %in% run_acc)
 
 # Write to file, replacing the original
-write.table(sra_table, file='PRJNA766716_SraRunTable.txt', quote=FALSE, sep='\t')
+data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 
 ### PRJNA836755
-Download the extra metadata table:
+Go to the project directory and load R
 ```bash
 cd ../PRJNA836755
-
-pysradb metadata PRJNA836755 --detailed --saveto PRJNA836755_PysradbTable.tsv
+R
 ```
-Again, filter using R:
+Again, filter in R:
 ```R
 library(data.table)
 library(dplyr)
 
+# Extract project name from directory name
+fullpath = getwd()
+prjna = basename(fullpath)
+
 # Read in data
-pysradb_table = data.table::fread(paste0("PRJNA766716_PysradbTable.tsv"),data.table = F)
-sra_table = data.table::fread(paste0("PRJNA766716_SraRunTable.txt"),data.table = F)
+sra_table = data.table::fread(paste0(prjna,"_SraRunTable.txt"),data.table = F)
+
+# Filter table so that it only includes RNA-seq runs
+sra_table <- sra_table[sra_table$LibraryStrategy == "RNA-Seq",]
+
+# Write to file, replacing the original
+data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
+```
+
+### PRJNA754050
+There is only one run for non-cancerous cells: SRR15424680. We could use sed to filter for this, but we already have R code so use this.
+```bash
+cd ../	PRJNA754050
+R
+```
+Run R
+```R
+library(data.table)
+library(dplyr)
+
+# Extract project name from directory name
+fullpath = getwd()
+prjna = basename(fullpath)
+
+# Read in data
+sra_table = data.table::fread(paste0(prjna,"_SraRunTable.txt"),data.table = F)
+
+# Filter table so that it only includes RNA-seq runs
+sra_table <- sra_table[sra_table$Run == "SRR15424680",]
+
+# Write to file, replacing the original
+data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
+```
+### PRJNA189204
+These samples contain both human and mouse and a variety of different cells types (most of which are embryos). 
+```bash
+cd ../	PRJNA189204
+pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv
+R
+```
+Filter for human and oocytes:
+```R
+library(data.table)
+library(dplyr)
+
+# Extract project name from directory name
+fullpath = getwd()
+prjna = basename(fullpath)
+
+# Read in data
+pysradb_table = data.table::fread(paste0(prjna,"_PysradbTable.tsv"),data.table = F)
+sra_table = data.table::fread(paste0(prjna,"_SraRunTable.txt"),data.table = F)
 
 # Replace spaces with underscores in colnames of pysradb table
 colnames(pysradb_table) <- sub(" ", "_", colnames(pysradb_table))
 
-# Extract run accession numbers for normal samples only (not cancer) and filter using these
-run_acc <- pysradb_table[pysradb_table$tissue_type %like% "Normal", "run_accession"]
+# Filter table so that it only includes human samples that are oocytes
+run_acc <- pysradb_table[(pysradb_table$cell_type == "oocyte" & pysradb_table$organism_name == "Homo sapiens"), "run_accession"]
 sra_table <- filter(sra_table, Run %in% run_acc)
 
 # Write to file, replacing the original
-write.table(sra_table, file='PRJNA766716_SraRunTable.txt', quote=FALSE, sep='\t')
+data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
