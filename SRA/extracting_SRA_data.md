@@ -69,10 +69,6 @@ The output should look like this:
 |   `-- PRJNA153427_SraRunTable.txt
 |-- PRJNA189204
 |   `-- PRJNA189204_SraRunTable.txt
-|-- PRJNA315404
-|   `-- PRJNA315404_SraRunTable.txt
-|-- PRJNA340388
-|   `-- PRJNA340388_SraRunTable.txt
 |-- PRJNA421274
 |   `-- PRJNA421274_SraRunTable.txt
 |-- PRJNA484542
@@ -123,20 +119,24 @@ The SRA Run tables we downloaded do not contain the 'tissue_type' column from th
 | PRJNA774191   | N                   | NA                        | 141                        | 
 | PRJNA647391   | Y                   | Filter for RNA-seq only   | 42                         | 
 
+Make sure that pusradb is installed - we will use this package for downloading extra metadata for selected projects.
+```bash
+pip install pysradb
+```
 
 ### PRJNA766716
 
 ```bash
-# pip install pysradb
-
 cd PRJNA766716
-pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv
 ```
-Filter for PRJNA766716 to exclude cancer samples:
+Filter for PRJNA766716 to exclude runs for cancer samples:
 
 ```R
 library(data.table)
 library(dplyr)
+
+# Download pysradb metadata
+system('pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv')
 
 # Extract project name from directory name
 fullpath = getwd()
@@ -185,7 +185,6 @@ Disgard scATAC runs.
 
 ```bash
 cd ../	PRJNA792835
-R
 ```
 
 ```R
@@ -234,12 +233,14 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 These samples contain both human and mouse and a variety of different cells types (most of which are embryos). 
 ```bash
 cd ../	PRJNA189204
-pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv
 ```
 Filter for human and oocytes:
 ```R
 library(data.table)
 library(dplyr)
+
+# Download pysradb metadata
+system('pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv')
 
 # Extract project name from directory name
 fullpath = getwd()
@@ -265,7 +266,6 @@ Filter for oocytes.
 
 ```bash
 cd ../PRJNA552816
-pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv
 ```
 ```R
 library(data.table)
@@ -274,6 +274,9 @@ library(dplyr)
 # Extract project name from directory name
 fullpath = getwd()
 prjna = basename(fullpath)
+
+# Download pysradb metadata
+system('pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv')
 
 # Read in data
 pysradb_table = data.table::fread(paste0(prjna,"_PysradbTable.tsv"),data.table = F)
@@ -293,11 +296,13 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ### PRJNA153427
 ```bash
 cd ../PRJNA153427
-pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv
 ```
 ```R
 library(data.table)
 library(dplyr)
+
+# Download pysradb metadata
+system('pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv')
 
 # Extract project name from directory name
 fullpath = getwd()
@@ -318,16 +323,17 @@ sra_table <- filter(sra_table, Run %in% run_acc)
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 
-
 ### PRJNA879764
 ```bash
 cd ../PRJNA879764
-pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv
 ```
 
 ```R
 library(data.table)
 library(dplyr)
+
+# Download pysradb metadata
+system('pysradb metadata "${PWD##*/}" --detailed --saveto "${PWD##*/}"_PysradbTable.tsv')
 
 # Extract project name from directory name
 fullpath = getwd()
