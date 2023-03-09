@@ -104,22 +104,23 @@ The output should look like this:
 # 3. Manually filter metadata tables to only contain samples/runs that we want
 The SRA Run tables we downloaded do not contain the 'tissue_type' column from the metadata table on the SRA website. There are a few ways to extract the extra data using the command line see [https://bioinformatics.stackexchange.com/questions/7027/how-to-extract-metadata-from-ncbis-short-read-archive-sra-for-a-few-runs](link). I found the easiest way was to use the package pysradb. Save the data in a tsv file to avoid formatting issues. Use the detailed arguement to ensure metadata for all runs are downloaded.
 
-| Project acc.  | Filtering Required? | Filtering requirements    | 
-| :-----------: |:-------------------:| :------------------------:|
-| PRJNA766716   |            Y        | Disgard cancer samples    |
-| PRJNA836755   |            Y        | Disgard snATAC runs       |
-| PRJNA701233   |            N        | NA                        |
-| PRJNA792835   |            Y        | Disgard scATAC runs       |   
-| PRJNA754050   |            Y        | Disgard cancer samples    |
-| PRJNA421274   |            N        | NA                        |
-| PRJNA484542   |            N        | NA                        |
-| PRJNA514416   |            N        | No for now                |
-| PRJNA189204   |                     |                           |
-| PRJNA153427   |                     |                           |
-| PRJNA879764   |                     |                           |
-| PRJNA849410   |                     |                           |
-| PRJNA774191   |                     |                           |
-| PRJNA647391   |                     |                           |
+| Project acc.  | Filtering Required? | Filtering requirements    | Total runs after filtering |
+| :-----------: |:-------------------:| :------------------------:|:--------------------------:|
+| PRJNA766716   | Y                   | Disgard cancer samples    | 20                         |
+| PRJNA836755   | Y                   | Disgard snATAC runs       | 8                          |
+| PRJNA701233   | N                   | NA                        | 19                         |
+| PRJNA792835   | Y                   | Disgard scATAC runs       | 10                         |
+| PRJNA754050   | Y                   | Disgard cancer samples    | 1                          |
+| PRJNA421274   | N                   | NA                        | 50                         |
+| PRJNA484542   | N                   | NA                        | 31                         |
+| PRJNA514416   | N                   | No for now (endometriosis)| 34                         |
+| PRJNA189204   | Y                   | Filter for human oocytes  | 3                          |
+| PRJNA552816   | Y                   | Filter for oocytes        | 9                          |
+| PRJNA153427   | Y                   | Filter for oocytes        | 3                          |
+| PRJNA879764   | Y                   | Filter for ovary          | 11                         |
+| PRJNA849410   | N                   | NA                        | 8                          |
+| PRJNA774191   | N                   | NA                        | 141                        |
+| PRJNA647391   | Y                   | Filter for RNA-seq only   | 42                         |
 
 
 ### PRJNA766716
