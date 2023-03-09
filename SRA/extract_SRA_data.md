@@ -405,7 +405,7 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 module load SRA-Toolkit/3.0.0-centos_linux64
 module load parallel/20210722-GCCcore-11.2.0
 
-
+# Sort out the formatting on all sra_table files
 for f in PR* ; do Rscript format_sra_tables.R "$f"; done
 
 # Make an accession list of runs for each project
