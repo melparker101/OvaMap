@@ -415,7 +415,7 @@ for f in PR*
 do awk -v OFS='\t' 'NR>1{print $1}' "$f"/"$f"_SraRunTable.txt > "$f"/"$f"_SraAccList.txt
 done
 
-# Check that accession files contain the run numbers
+# Check that accession files contain the run numbers and not other info
 cat prja_list.txt | parallel "echo {}; head -3 {}/{}_SraAccList.txt"
 
 # Download SRA files
