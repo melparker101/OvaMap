@@ -399,7 +399,34 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 # 4. Prefetch SRA data
 ```bash
-module load SRA-Toolkit/3.0.0-centos_linux64
-```
+# pwd = fastq
 
-prefetch --option-file SraAccList.txt
+# Load modules
+module load SRA-Toolkit/3.0.0-centos_linux64
+module load parallel/20210722-GCCcore-11.2.0
+
+
+for f in PR* ; do Rscript format_sra_tables.R "$f"; done
+
+# Make an accession list of runs for each project
+for f in PR*
+do awk -v OFS='\t' 'NR>1{print $1}' "$f"/"$f"_SraRunTable.txt > "$f"/"$f"_SraAccList.txt
+done
+
+# Check that accession files contain the run numbers
+cat prja_list.txt | parallel "echo {}; head -3 {}/{}_SraAccList.txt"
+
+# Download SRA files
+nohup cat prja_list.txt | parallel "prefetch --option-file {}/{}_SraAccList.txt --max-size 420000000000 -O {}/{}" &> output.out &
+```
+where Rscript format_sra_tables.R is 
+```R
+# Extract project name
+prjna <- commandArgs(trailingOnly = T)
+
+# Read in data
+sra_table = data.table::fread(paste0(prjna, "/", prjna, "_SraRunTable.txt"),data.table = F)
+
+# Write to file, replacing the original
+data.table::fwrite(sra_table, paste0(prjna, "/", prjna,"_SraRunTable.txt"), sep='\t')
+```
