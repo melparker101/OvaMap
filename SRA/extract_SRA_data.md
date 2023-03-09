@@ -410,6 +410,7 @@ module load parallel/20210722-GCCcore-11.2.0
 for f in PR* ; do Rscript format_sra_tables.R "$f"; done
 
 # Make an accession list of runs for each project
+# Do this by extracting the first column of each SraRunTable.txt file (minus the table header)
 for f in PR*
 do awk -v OFS='\t' 'NR>1{print $1}' "$f"/"$f"_SraRunTable.txt > "$f"/"$f"_SraAccList.txt
 done
