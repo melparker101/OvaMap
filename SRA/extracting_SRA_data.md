@@ -107,21 +107,21 @@ The SRA Run tables we downloaded do not contain the 'tissue_type' column from th
 
 | Project acc.  | Filtering Required? | Filtering requirements    | Total runs after filtering |
 | :-----------: |:-------------------:| :------------------------:|:--------------------------:|
-| PRJNA766716   | Y                   | Disgard cancer samples    | 20                         | .
-| PRJNA836755   | Y                   | Disgard snATAC runs       | 8                          | .
-| PRJNA701233   | N                   | NA                        | 19                         | .
-| PRJNA792835   | Y                   | Disgard scATAC runs       | 10                         | .
-| PRJNA754050   | Y                   | Disgard cancer samples    | 1                          | .
-| PRJNA421274   | N                   | NA                        | 148                        | .
-| PRJNA484542   | N                   | NA                        | 31                         | .
-| PRJNA514416   | N                   | No for now (endometriosis)| 34                         | .
-| PRJNA189204   | Y                   | Filter for human oocytes  | 3                          | .
-| PRJNA552816   | Y                   | Filter for oocytes        | 9                          | .
-| PRJNA153427   | Y                   | Filter for oocytes        | 3                          | .
-| PRJNA879764   | Y                   | Filter for ovary          | 11                         | .
-| PRJNA849410   | N                   | NA                        | 8                          | .
-| PRJNA774191   | N                   | NA                        | 141                        | .
-| PRJNA647391   | Y                   | Filter for RNA-seq only   | 42                         | -
+| PRJNA766716   | Y                   | Disgard cancer samples    | 20                         | 
+| PRJNA836755   | Y                   | Disgard snATAC runs       | 8                          | 
+| PRJNA701233   | N                   | NA                        | 19                         | 
+| PRJNA792835   | Y                   | Disgard scATAC runs       | 10                         | 
+| PRJNA754050   | Y                   | Disgard cancer samples    | 1                          | 
+| PRJNA421274   | N                   | NA                        | 148                        | 
+| PRJNA484542   | N                   | NA                        | 31                         | 
+| PRJNA514416   | N                   | No for now (endometriosis)| 34                         | 
+| PRJNA189204   | Y                   | Filter for human oocytes  | 3                          | 
+| PRJNA552816   | Y                   | Filter for oocytes        | 9                          | 
+| PRJNA153427   | Y                   | Filter for oocytes        | 3                          | 
+| PRJNA879764   | Y                   | Filter for ovary          | 11                         | 
+| PRJNA849410   | N                   | NA                        | 8                          | 
+| PRJNA774191   | N                   | NA                        | 141                        | 
+| PRJNA647391   | Y                   | Filter for RNA-seq only   | 42                         | 
 
 
 ### PRJNA766716
