@@ -421,7 +421,7 @@ nohup cat prja_list.txt | parallel "prefetch --option-file {}/{}_SraAccList.txt 
 ```
 where Rscript format_sra_tables.R is 
 ```R
-# Extract project name
+# Extract project name from argument passed in on command line
 prjna <- commandArgs(trailingOnly = T)
 
 # Read in data
