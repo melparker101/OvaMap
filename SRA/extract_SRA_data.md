@@ -125,13 +125,14 @@ pip install pysradb
 ```
 
 ### PRJNA766716
-
+Filter for PRJNA766716 to exclude runs for cancer samples.
 ```bash
 cd PRJNA766716
 ```
-Filter for PRJNA766716 to exclude runs for cancer samples:
-
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
@@ -158,12 +159,14 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 
 ### PRJNA836755
-Go to the project directory and load R
+Go to the project directory and load R.
 ```bash
 cd ../PRJNA836755
 ```
-Again, filter in R:
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
@@ -182,12 +185,13 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 ### PRJNA792835
 Disgard scATAC runs.
-
 ```bash
 cd ../PRJNA792835
 ```
-
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
@@ -210,8 +214,10 @@ There is only one run for non-cancerous cells: SRR15424680. We could use sed to 
 ```bash
 cd ../PRJNA754050
 ```
-Run R
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
@@ -230,12 +236,14 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 
 ### PRJNA189204
-These samples contain both human and mouse and a variety of different cells types (most of which are embryos). 
+These samples contain both human and mouse and a variety of different cells types (most of which are embryos). Filter for human and oocytes.
 ```bash
 cd ../PRJNA189204
 ```
-Filter for human and oocytes:
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
@@ -268,6 +276,9 @@ Filter for oocytes.
 cd ../PRJNA552816
 ```
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
@@ -298,6 +309,9 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 cd ../PRJNA153427
 ```
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
@@ -327,8 +341,10 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```bash
 cd ../PRJNA879764
 ```
-
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
@@ -358,8 +374,10 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```bash
 cd ../PRJNA647391
 ```
-
 ```R
+#############
+R Script
+#############
 library(data.table)
 library(dplyr)
 
