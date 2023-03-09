@@ -398,6 +398,7 @@ sra_table <- sra_table[sra_table$LibraryStrategy %like% "RNA",]
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 # 4. Prefetch SRA data
+Prefetch each project's SRA files in parallel (15 parallel jobs).
 ```bash
 # pwd = fastq
 
