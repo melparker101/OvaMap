@@ -154,6 +154,9 @@ colnames(pysradb_table) <- sub(" ", "_", colnames(pysradb_table))
 run_acc <- pysradb_table[pysradb_table$tissue_type %like% "Normal", "run_accession"]
 sra_table <- filter(sra_table, Run %in% run_acc)
 
+# Remove first column so that the new first column contains the run accession numbers
+sra_table <- sra_table[,-1]
+
 # Write to file, replacing the original
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
@@ -394,3 +397,9 @@ sra_table <- sra_table[sra_table$LibraryStrategy %like% "RNA",]
 # Write to file, replacing the original
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
+# 4. Prefetch SRA data
+```bash
+module load SRA-Toolkit/3.0.0-centos_linux64
+```
+
+prefetch --option-file SraAccList.txt
