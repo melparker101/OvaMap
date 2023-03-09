@@ -418,6 +418,7 @@ done
 cat prja_list.txt | parallel "echo {}; head -3 {}/{}_SraAccList.txt"
 
 # Download SRA files
+# Use nohup to keep jobs running in background even when logged off
 nohup cat prja_list.txt | parallel "prefetch --option-file {}/{}_SraAccList.txt --max-size 420000000000 -O {}/{}" &> output.out &
 ```
 where Rscript format_sra_tables.R is 
