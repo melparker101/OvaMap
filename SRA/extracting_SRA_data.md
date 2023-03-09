@@ -184,7 +184,7 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 Disgard scATAC runs.
 
 ```bash
-cd ../	PRJNA792835
+cd ../PRJNA792835
 ```
 
 ```R
@@ -208,7 +208,7 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ### PRJNA754050
 There is only one run for non-cancerous cells: SRR15424680. We could use sed to filter for this, but we already have R code so use this.
 ```bash
-cd ../	PRJNA754050
+cd ../PRJNA754050
 ```
 Run R
 ```R
@@ -232,7 +232,7 @@ data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ### PRJNA189204
 These samples contain both human and mouse and a variety of different cells types (most of which are embryos). 
 ```bash
-cd ../	PRJNA189204
+cd ../PRJNA189204
 ```
 Filter for human and oocytes:
 ```R
