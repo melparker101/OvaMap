@@ -433,3 +433,7 @@ sra_table = data.table::fread(paste0(prjna, "/", prjna, "_SraRunTable.txt"),data
 # Write to file, replacing the original
 data.table::fwrite(sra_table, paste0(prjna, "/", prjna,"_SraRunTable.txt"), sep='\t')
 ```
+# 5. Make fastq files using fasterq-dump
+```bash
+nohup cat prja_list.txt | parallel "mkdir {}/raw_reads; fasterq-dump {}/raw_reads -O {}" &> output.out &
+```
