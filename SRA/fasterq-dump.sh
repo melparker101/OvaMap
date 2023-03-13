@@ -31,15 +31,16 @@ echo "##########################################################"
 
 PROJECT=$(sed "${SLURM_ARRAY_TASK_ID}"'q;d' prja_list.txt)
 
-IN="$PROJECT"/sra_files  # $1
-OUT="$PROJECT"/raw_reads  # $2
+IN=sra_files  # $1
+OUT=raw_reads  # $2
 
 # Load modules
 module load SRA-Toolkit/3.0.0-centos_linux64
 module load parallel/20210722-GCCcore-11.2.0
 
 # Convert SRA files to fastq files
-cat "$PROJECT"/"$PROJECT"_SraAccList.txt | parallel fasterq-dump "$IN"/{} -O "$OUT"
+cd "$PROJECT"
+cat "$PROJECT"_SraAccList.txt | parallel fasterq-dump "$IN"/{} -O "$OUT"
 
 
 echo "###########################################################"
