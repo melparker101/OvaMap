@@ -38,8 +38,15 @@ OUT=raw_reads  # $2
 module load SRA-Toolkit/3.0.0-centos_linux64
 module load parallel/20210722-GCCcore-11.2.0
 
-# Convert SRA files to fastq files
 cd "$PROJECT"
+
+# Create output directory
+if [ ! -p "$OUT" ]
+then
+  mkdir -p "OUT"
+fi
+
+# Convert SRA files to fastq files
 cat "$PROJECT"_SraAccList.txt | parallel fasterq-dump "$IN"/{} -O "$OUT"
 
 
