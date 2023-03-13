@@ -29,7 +29,7 @@ echo "Started at: "`date`
 echo "##########################################################"
 
 
-PROJECT=$(sed "${SLURM_ARRAY_TASK_ID}"'q;d' prja_list2.txt)
+PROJECT=$(sed "${SLURM_ARRAY_TASK_ID}"'q;d' prja_list.txt)
 
 IN="$PROJECT"/sra_files  # $1
 OUT="$PROJECT"/raw_reads  # $2
