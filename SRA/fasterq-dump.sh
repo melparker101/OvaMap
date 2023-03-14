@@ -2,7 +2,7 @@
 
 # ----------------------------------------------------------
 # Script to convert SRA files to fastq files
-# melodyjparker14@gmail.com - Dec 22
+# melodyjparker14@gmail.com - Mar 23
 # ----------------------------------------------------------
 
 #SBATCH -A lindgren.prj
