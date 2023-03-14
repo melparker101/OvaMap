@@ -496,12 +496,12 @@ nohup cat PRJNA421274_SraAccList.txt | parallel fasterq-dump sra_files/{} -O raw
 # Each of these scripts runs fasterq-dump in parallel for each run in the project
 sbatch fasterq-dump.sh
 
-# Run a quick check to make sure that we have all of the desired fastq files
+# Run a quick check to make sure that we have all of the desired fastq files. This must be done before gzipping (alter code if looking for .gz files)
 # This includes paired and/or unmatched reads
 for f in PR*; do
   while read p; do
   path=$f/raw_reads/
-    if [[ ! -f "$path""$p".fastq && (! -f "$path""$p"_1.fastq || ! -f "$path""$p"_1.fastq) ]]
+    if [[ ! -f "$path""$p".fastq && (! -f "$path""$p"_1.fastq || ! -f "$path""$p"_2.fastq) ]]
     then
       echo "Not all SRA files converted to fastq files for project $f. Please check run $p"
     fi
