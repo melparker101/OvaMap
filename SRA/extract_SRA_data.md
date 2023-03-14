@@ -511,14 +511,6 @@ done
 Fasterq-dump has no compression argument - we will have to do this explicitly. This is really slow, so send off some array scripts.
 ```bash
 
-# Compress all fastq files
-for f in PR*; do
-  while read p; do
-    gzip "$f"/raw_reads/"$p"*.fastq
-  done <"$f"/"$f"_SraAccList.txt
-done
-
-# Use script - this is faster
-# Still testing it
+# Use array script - this sends off a script per project and runs all reads of a project in parallel
 sbatch compress_fastq_files.sh
 ```
