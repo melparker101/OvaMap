@@ -42,7 +42,6 @@ cat "$PROJECT"/"$PROJECT"_SraAccList.txt | parallel gzip "$PROJECT"/raw_reads/{}
 
 
 echo "###########################################################"
-echo "Fastq files created."
 echo "Finished at: "`date`
 echo "###########################################################"
 exit 0
