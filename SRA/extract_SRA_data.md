@@ -420,7 +420,8 @@ cat prja_list.txt | parallel "echo {}; head -3 {}/{}_SraAccList.txt"
 
 # Download SRA files
 # Use nohup to keep jobs running in background even when logged off
-nohup cat prja_list.txt | parallel "prefetch --option-file {}/{}_SraAccList.txt --max-size 420000000000 -O {}/{}" &> output.out &
+# nohup cat prja_list.txt | parallel "prefetch --option-file {}/{}_SraAccList.txt --max-size 420000000000 -O {}/{}" &> output.out &
+nohup cat prja_list.txt | parallel "prefetch --option-file {}/{}_SraAccList.txt --max-size 420000000000 -O {}/sra_files" &> output.out &
 ```
 where Rscript format_sra_tables.R is 
 ```R
@@ -433,7 +434,105 @@ sra_table = data.table::fread(paste0(prjna, "/", prjna, "_SraRunTable.txt"),data
 # Write to file, replacing the original
 data.table::fwrite(sra_table, paste0(prjna, "/", prjna,"_SraRunTable.txt"), sep='\t')
 ```
-# 5. Make fastq files using fasterq-dump
+
+After the download has finished, do a basic check to test that the number of sra files matches with the number of SRA accessions for each project. We can then rerun the download for any projects/reads that weren't successful.
 ```bash
-nohup cat prja_list.txt | parallel "mkdir {}/raw_reads; fasterq-dump {}/raw_reads -O {}" &> output.out &
+# Check log file
+cat output.out
+
+# Print a summary of the number of sra/sralite files that have been downloaded for each project
+# Not sure how robust this is but it works for now
+echo "-----------"; \
+for f in PR*; do
+  # Count how many sra files exit
+  n_sra_files=$(ls "$f"/sra_files/*/*.sra | wc -l)
+  if [[ -e "$f"/sra_files/*/*.sralite ]]
+  then
+    n_sralite_files=$(ls "$f"/sra_files/*/*.sralite | wc -l)
+  else
+    n_sralite_files=0
+  fi
+  # Total number of sra/sralite files
+  n_sra_total=$(($n_sra_files + $n_sralite_files))
+  # Count how many read accession numbers we have
+  n_sra_acc=$(cat "$f"/"$f"_SraAccList.txt | wc -l)
+  # Print a summary
+  echo "$f: $n_sra_total/$n_sra_acc SRA files downloaded"
+  echo "-----------"
+done
+
+# Print all run accessions
+for f in PR*; do
+  while read p; do
+    echo "$p"
+  done <"$f"/"$f"_SraAccList.txt
+done
+
+# Take a look at which files have downloaded sucessfully for a chosen project
+tree PRJNA421274/sra_files
+
+nohup prefetch --option-file PRJNA766716/PRJNA766716_SraAccList.txt --max-size 420000000000 -O PRJNA766716/PRJNA766716 &> output3.out &
+
+ps -wx
+
+# rerun and then search for failed downloads
+nohup prefetch --option-file PRJNA421274_SraAccList.txt --max-size 420000000000 -O sra_files &> output2.out &
+
+grep "failed" output2.out
+# 2023-03-14T01:03:34 prefetch.3.0.0: 84) failed to download 'SRR6350505': RC(rcExe,rcFile,rcCopying,rcLock,rcExists)
+
+# For any run that still do not download sucessfully, prefetch them individually, e.g:
+cd PRJNA421274
+nohup prefetch SRR6350505 --max-size 420000000000 -O sra_files &> output3.out &
+cd ..
+
+# Run a check on all sra files in the background and check for errors
+for f in P*; do vdb-validate "$f"/sra_files/*/*.sra &>> vdb_all.out; done & 
+grep "err" vdb_all.out
+```
+
+
+# 5. Make fastq files using fasterq-dump
+Log into an interactive load on slurm for more cores. Fasterq-dump does not allow you to input a list of SRA numbers.
+```bash
+# Load modules
+module load SRA-Toolkit/3.0.0-centos_linux64
+module load parallel/20210722-GCCcore-11.2.0
+
+nohup cat prja_list2.txt | parallel "mkdir {}/raw_reads; fasterq-dump {}/{} -O {}/raw_reads" &> output_fq.out &
+
+# Or for a specific project
+nohup cat PRJNA421274_SraAccList.txt | parallel fasterq-dump sra_files/{} -O raw_reads &> output_fq.out &
+
+# Run fasterq-dump array script to create fastq files from SRA files
+# This sends off 15 array scripts - one for each project
+# Each of these scripts runs fasterq-dump in parallel for each run in the project
+sbatch fasterq-dump.sh
+
+# Run a quick check to make sure that we have all of the desired fastq files
+# This includes paired and/or unmatched reads
+for f in PR*; do
+  while read p; do
+  path=$f/raw_reads/
+    if [[ ! -f "$path""$p".fastq && (! -f "$path""$p"_1.fastq || ! -f "$path""$p"_1.fastq) ]]
+    then
+      echo "Not all SRA files converted to fastq files for project $f. Please check run $p"
+    fi
+  done <"$f"/"$f"_SraAccList.txt
+done
+```
+# 6. Compress fastq files
+Fasterq-dump has no compression argument - we will have to do this explicitly. This is really slow, so send off some array scripts.
+```bash
+
+# Compress all fastq files
+for f in PR*; do
+  while read p; do
+    gzip "$f"/raw_reads/"$p"*.fastq
+  done <"$f"/"$f"_SraAccList.txt
+done
+
+# Use script - this is faster
+# Still testing it
+sbatch compress_fastq_files.sh
 ```
