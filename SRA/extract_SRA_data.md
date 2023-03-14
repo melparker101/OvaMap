@@ -485,10 +485,11 @@ Internet connection is not necessary, so log into an interactive node on slurm. 
 module load SRA-Toolkit/3.0.0-centos_linux64
 module load parallel/20210722-GCCcore-11.2.0
 
-nohup cat prja_list2.txt | parallel "mkdir {}/raw_reads; fasterq-dump {}/{} -O {}/raw_reads" &> output_fq.out &
+# test this with logs/ added
+nohup cat prja_list2.txt | parallel "mkdir {}/raw_reads; fasterq-dump {}/{} -O {}/raw_reads" &> logs/output_fq.out &
 
 # Or for a specific project
-nohup cat PRJNA421274_SraAccList.txt | parallel fasterq-dump sra_files/{} -O raw_reads &> output_fq.out &
+nohup cat PRJNA421274_SraAccList.txt | parallel fasterq-dump sra_files/{} -O raw_reads &> logs/output_fq.out &
 
 # Run fasterq-dump array script to create fastq files from SRA files
 # This sends off 15 array scripts - one for each project
