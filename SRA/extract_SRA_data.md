@@ -460,27 +460,25 @@ done
 # Take a look at which files have downloaded sucessfully for a chosen project
 tree PRJNA421274/sra_files
 
-nohup prefetch --option-file PRJNA766716/PRJNA766716_SraAccList.txt --max-size 420000000000 -O PRJNA766716/PRJNA766716 &> output3.out &
-
-ps -wx
-
-# rerun and then search for failed downloads
+# Rerun and then search for failed downloads - the prefetch command skips any files that are already downloaded
+cd PRJNA421274
 nohup prefetch --option-file PRJNA421274_SraAccList.txt --max-size 420000000000 -O sra_files &> output2.out &
 
+# Check to see if any of these runs failed again
 grep "failed" output2.out
 # 2023-03-14T01:03:34 prefetch.3.0.0: 84) failed to download 'SRR6350505': RC(rcExe,rcFile,rcCopying,rcLock,rcExists)
 
 # For any run that still do not download sucessfully, prefetch them individually, e.g:
-cd PRJNA421274
 nohup prefetch SRR6350505 --max-size 420000000000 -O sra_files &> output3.out &
 cd ..
 
-# Run a check on all sra files in the background and check for errors
-for f in P*; do vdb-validate "$f"/sra_files/*/*.sra &>> vdb_all.out; done & 
+# Once all SRA files have downloaded, run a quality check on all SRA files in the background and check for errors
+# for f in P*; do vdb-validate "$f"/sra_files/*/*.sra &>> vdb_all.out; done & 
+for f in P*; do vdb-validate "$f"/sra_files/*/ &>> vdb_all.out; done & 
 grep "err" vdb_all.out
 ```
 
-# 5. Make fastq files using fasterq-dump
+# 5. Create fastq files using fasterq-dump
 Internet connection is not necessary, so log into an interactive node on slurm. Fasterq-dump does not allow you to input a list of SRA numbers.
 ```bash
 # Load modules
