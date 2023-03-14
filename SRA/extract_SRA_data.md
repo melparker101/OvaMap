@@ -398,7 +398,7 @@ sra_table <- sra_table[sra_table$LibraryStrategy %like% "RNA",]
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 # 4. Prefetch SRA data
-Download SRA files for each project; do this in parallel (split into 15 parallel jobs). Use the Rscript format_sra_tables.R to make sure all SRA metadata tables are in the correct format.
+Download SRA files for each project; do this in parallel (split into 15 parallel jobs). This requires internet connection. Use the Rscript format_sra_tables.R to make sure all SRA metadata tables are in the correct format.
 ```bash
 # pwd = fastq
 
@@ -480,9 +480,8 @@ for f in P*; do vdb-validate "$f"/sra_files/*/*.sra &>> vdb_all.out; done &
 grep "err" vdb_all.out
 ```
 
-
 # 5. Make fastq files using fasterq-dump
-Log into an interactive load on slurm for more cores. Fasterq-dump does not allow you to input a list of SRA numbers.
+Internet connection is not necessary, so log into an interactive node on slurm. Fasterq-dump does not allow you to input a list of SRA numbers.
 ```bash
 # Load modules
 module load SRA-Toolkit/3.0.0-centos_linux64
