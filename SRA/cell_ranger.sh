@@ -20,6 +20,8 @@
 # mv  SRR8111694_2.fastq.gz SRR8111694_S1_L004_R2_001.fastq.gz
 # https://bioinformaticsworkbook.org/dataAnalysis/RNA-Seq/Single_Cell_RNAseq/Chromium_Cell_Ranger.html#gsc.tab=0
 
+# read this https://kb.10xgenomics.com/hc/en-us/articles/115003802691-How-do-I-prepare-Sequence-Read-Archive-SRA-data-from-NCBI-for-Cell-Ranger-
+
 # HypoMap:
 # For 10X datasets (including nucSeq), Cellranger Version 6.0.1 (5.0.1 for nucSeq) was used to 
 # (1) map sequence reads to the mouse genome GRCm38 (mm10); and 
