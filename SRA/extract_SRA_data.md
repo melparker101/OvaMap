@@ -398,7 +398,7 @@ sra_table <- sra_table[sra_table$LibraryStrategy %like% "RNA",]
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
 # 4. Prefetch SRA data
-Download SRA files for each project; do this in parallel (split into 15 parallel jobs).
+Download SRA files for each project; do this in parallel (split into 15 parallel jobs). Use the Rscript format_sra_tables.R to make sure all SRA metadata tables are in the correct format.
 ```bash
 # pwd = fastq
 
@@ -422,17 +422,6 @@ cat prja_list.txt | parallel "echo {}; head -3 {}/{}_SraAccList.txt"
 # Use nohup to keep jobs running in background even when logged off
 # nohup cat prja_list.txt | parallel "prefetch --option-file {}/{}_SraAccList.txt --max-size 420000000000 -O {}/{}" &> output.out &
 nohup cat prja_list.txt | parallel "prefetch --option-file {}/{}_SraAccList.txt --max-size 420000000000 -O {}/sra_files" &> output.out &
-```
-where Rscript format_sra_tables.R is 
-```R
-# Extract project name from argument passed in on command line
-prjna <- commandArgs(trailingOnly = T)
-
-# Read in data
-sra_table = data.table::fread(paste0(prjna, "/", prjna, "_SraRunTable.txt"),data.table = F)
-
-# Write to file, replacing the original
-data.table::fwrite(sra_table, paste0(prjna, "/", prjna,"_SraRunTable.txt"), sep='\t')
 ```
 
 After the download has finished, do a basic check to test that the number of sra files matches with the number of SRA accessions for each project. We can then rerun the download for any projects/reads that weren't successful.
