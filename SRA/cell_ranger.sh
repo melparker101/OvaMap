@@ -46,7 +46,12 @@ wget https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz -
 tar -xvf "$REF"/refdata-gex-GRCh38-2020-A.tar.gz 
 rm "$REF"/refdata-gex-GRCh38-2020-A.tar.gz
 
+# Extract the lane number or fastq files that have multiple runs per sample
+zcat SRR16093329_2.fastq.gz | awk -F: '{print $4}' | head -1
+
 # Run cellranger to align and quantify
 cellranger count --id "$PROJECT" --transcriptome "$REF"/refdata-gex-GRCh38-2020-A.tar.gz \
                  --fastqs "$PROJECT"/raw_reads --sample $READ \
                  --expect_cells "$N_CELLS" 
+                 
+     
