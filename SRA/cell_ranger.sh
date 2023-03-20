@@ -46,8 +46,63 @@ wget https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz -
 tar -xvf "$REF"/refdata-gex-GRCh38-2020-A.tar.gz 
 rm "$REF"/refdata-gex-GRCh38-2020-A.tar.gz
 
+# https://emea.support.illumina.com/content/dam/illumina-support/documents/documentation/software_documentation/bcl2fastq/bcl2fastq2-v2-20-software-guide-15051736-03.pdf
+# Go to page 17
+
 # Extract the lane number or fastq files that have multiple runs per sample
 zcat SRR16093329_2.fastq.gz | awk -F: '{print $4}' | head -1
+
+# Extract the machine number 
+zcat SRR21536711_1.fastq.gz | awk -F'[:\" "]' '{print $2}' | head -1
+
+# Extract the length of file that isn't zipped
+length=$(cat SRR21536717_1.fastq | awk -F'[=\" "]' '{print $4}' | head -1)
+
+# Redo with these settings because some biological reads were labeled as technical on sra (-S = --split-reads?)
+nohup cat PRJNA879764_SraAccList.txt | parallel fasterq-dump sra_files/{} --include-technical -S -O raw_reads3 &> logs/output_fq.out &
+
+# Rename the reads that are only split into two
+# p = read accession number
+# Extract read length from header using awk -F'[=\" "]' - this means separate fields using = and " "
+while read p; do
+    lane="$(cat "$p"_1.fastq | awk -F: '{print $4}' | head -1)"
+    length="$(cat "$p"_1.fastq | awk -F'[=\" "]' '{print $4}' | head -1)"
+    if [[ ! -f "$p"_3.fastq ]]; then
+      if [[ $length == 28 ]]; then
+        echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
+        mv "$p"_1.fastq "$p"_S1_L00"$lane"_R1_001.fastq
+        mv "$p"_2.fastq "$p"_S1_L00"$lane"_R2_001.fastq
+      else 
+        echo "Name of fastq file was not changed as reads from "$p"_1.fastq did not have length=28."
+      fi
+    fi
+done <../PRJNA879764_SraAccList.txt
+
+# Rename the reads that split into three
+while read p; do
+  if [[ -f "$p"_3.fastq ]]; then
+  lane=$(cat "$p"_1.fastq | awk -F: '{print $4}' | head -1)
+  length1=$(cat "$p"_1.fastq | awk -F'[=\" "]' '{print $4}' | head -1)
+  length2=$(cat "$p"_2.fastq | awk -F'[=\" "]' '{print $4}' | head -1)
+  echo $length1
+  echo $length2
+    if [[ $length1 == 8 && $length2 == 28 ]]; then
+      echo "$p"
+        mv "$p"_2.fastq "$p"_S1_L00"$lane"_R1_001.fastq
+        mv "$p"_3.fastq "$p"_S1_L00"$lane"_R2_001.fastq
+    else 
+      echo "$p"
+      echo "Name of fastq file was not changed as reads from "$p"_2.fastq did not have length=28."
+    fi
+  fi
+done <../PRJNA879764_SraAccList.txt
+
+# Quick test - see if all R1 have length 28 from header
+for f in *S1_L004_R1_001.fastq; do  cat $f | head -1 ; done
+
+# Do the same for R2 - these should have length >28, e.g. 150
+for f in *S1_L004_R2_001.fastq; do  cat $f | head -1 ; done
+
 
 # Run cellranger to align and quantify
 cellranger count --id "$PROJECT" --transcriptome "$REF"/refdata-gex-GRCh38-2020-A.tar.gz \
