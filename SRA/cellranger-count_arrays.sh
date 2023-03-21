@@ -9,7 +9,7 @@
 
 #SBATCH -A lindgren.prj
 #SBATCH -p short
-#SBATCH -c 1
+#SBATCH -c 5
 #SBATCH -J cellranger-c_array
 #SBATCH -o logs/cellranger-count_%a_output.out
 
@@ -53,11 +53,16 @@ FASTQ=raw_reads
 SAMPLE=$(sed "${SLURM_ARRAY_TASK_ID}"'q;d' "$INDEX")
 
 
+if [ !-d cellranger_count ]; then
+  mkdir -p cellranger;
+fi
+cd cellranger
+
+
 # Run cellranger count
-# Try output as a path
-cellranger count --id cellranger/run_count_"$PROJECT" \
-                 --transcriptome "$REF" \
-                 --fastqs "$PROJECT"/"$FASTQ" \
+cellranger count --id run_count_"$PROJECT" \
+                 --transcriptome ../"$REF" \
+                 --fastqs ../"$PROJECT"/"$FASTQ" \
                  --sample "$SAMPLE"
                  
                  
