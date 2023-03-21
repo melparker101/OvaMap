@@ -10,8 +10,8 @@
 #SBATCH -A lindgren.prj
 #SBATCH -p short
 #SBATCH -c 1
-#SBATCH -J test_array_wc
-#SBATCH -o logs/test_output.out
+#SBATCH -J cellranger-c_array
+#SBATCH -o logs/cellranger-count_%a_output.out
 
 #  Parallel environment settings
 #  For more information on these please see the documentation
