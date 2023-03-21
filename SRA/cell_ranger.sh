@@ -103,10 +103,9 @@ for f in *S1_L004_R1_001.fastq; do  cat $f | head -1 ; done
 # Do the same for R2 - these should have length >28, e.g. 150
 for f in *S1_L004_R2_001.fastq; do  cat $f | head -1 ; done
 
-
+# --sample $READ excluded as we want to use all (S1)
 # Run cellranger to align and quantify
-cellranger count --id "$PROJECT" --transcriptome "$REF"/refdata-gex-GRCh38-2020-A.tar.gz \
-                 --fastqs "$PROJECT"/raw_reads --sample $READ \
-                 --expect_cells "$N_CELLS" 
+cellranger count --id run_count_"$PROJECT" --transcriptome ../"$REF"/refdata-gex-GRCh38-2020-A.tar.gz \
+                 --fastqs "$PROJECT"/raw_reads3  \
                  
      
