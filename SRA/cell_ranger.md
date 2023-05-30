@@ -10,6 +10,6 @@ There are 7 datasets:
 | PRJNA754050   | Sood10X      | 1                 | 1                | N                         |
 | PRJNA484542   | Fan10X       | 31                | 31               | N                         |
 | PRJNA879764   | Fonseca10X   | 4                 | 11               | Y                         |
-| PRJNA849410   | Choi10X      |                   |                  |                           |
+| PRJNA849410   | Choi10X      | 4                 | 8                | Y                         |
 
 # 1. Extract
