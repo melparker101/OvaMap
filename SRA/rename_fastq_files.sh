@@ -1,3 +1,17 @@
+# In progress... Make one loop with different options:
+# - one fastq file per run
+# - two fastq files per run: lengths 28 and ~150
+# - two fastq files per run: lengths 150 for both
+# - three fastq files per run: lengths 8, 28 and ~150
+
+# To test this, copy raw reads and then run it all.
+# projects=("PRJNA766716" "PRJNA792835" "PRJNA879764" "PRJNA849410")
+# for P in "${projects[@]}"
+# do
+#     echo "Processing project: $P"
+#     sh rename_fastq.sh $P
+# done
+
 # Start in the fastq directory... This contains all of the project directories
 # 
 # fastq/
@@ -29,20 +43,19 @@ done <../"$P"_SraAccList.txt
 
 while read p; do
 
-    # If the reads are not split
+    # 1. One fastq file per run
     if [[ -f "$p".fastq.gz ]]; then
         # Create string for lane and read length
         lane=$(zcat "$p".fastq.gz | awk -F: '{print $4}' | head -1)
         length=$(zcat "$p".fastq.gz | awk -F'[=\" "]' '{print $4}' | head -1)
-          
-          # If the length of read 1 is 28, then...
-          if [[ $length == 28 ]]; then
-            echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
-            mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
-            mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
-          else 
-            echo "Name of fastq file for run "$p" was not changed."
-          fi
+        echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
+        mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
+        mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
+      # 2. Two fastq files per run (lengths 28 and ~150)
+      elif [[ ! -f "$p"_3.fastq.gz ]]; then
+      # If the length of read 1 is 28, then...
+      if [[ $length == 28 ]]; then
+      
       fi
 done <../"$P"_SraAccList.txt
 
