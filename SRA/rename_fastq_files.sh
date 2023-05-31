@@ -40,7 +40,7 @@ while read p; do
 done <../"$P"_SraAccList.txt
 
 ##########################
-# For reads that are not split
+# For all types of fastqs
 ##########################
 
 while read p; do
@@ -62,25 +62,23 @@ while read p; do
       
       # 3. Two fastq files with length 150 each - it doesn't matter which is R1 and R2
       elif [[ ! -f "$p"_3.fastq.gz && $length1 == 150 && $length2 == 150 ]]; then
+        lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)
         echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
         mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
         mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
-      fi
       
+      # 4. Three fastq files (lengths 8,28,~150)
+      elif [[ -f "$p"_3.fastq.gz && $length1 == 8 && $length2 == 28 ]]; then
+        lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)
+        echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
+        mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
+        mv "$p"_3.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
+      
+      # Otherwise print message
+      else
+        echo "$p" was not renamed.
+      fi     
 done <../"$P"_SraAccList.txt
-
-  if [[ ! -f "$p"_3.fastq.gz ]]; then
-  lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)
-  length1=$(zcat "$p"_1.fastq.gz | awk -F'[=\" "]' '{print $4}' | head -1)
-  length2=$(zcat "$p"_2.fastq.gz | awk -F'[=\" "]' '{print $4}' | head -1)
-  echo $length1
-  echo $length2
-    # If there are two reads with length 150 each
-    if [[ $length1 == 150 && $length2 == 150 ]]; then
-      echo "$p"
-        mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
-        mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
-
 
 ##########################
 # For reads split in 2 (lengths 28 and ~150)
