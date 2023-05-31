@@ -3,6 +3,7 @@
 # ----------------------------------------------------------
 # Script to convert SRA files to fastq files
 # melodyjparker14@gmail.com - Mar 23
+# Not tested since updated
 # ----------------------------------------------------------
 
 #SBATCH -A lindgren.prj
@@ -47,7 +48,7 @@ then
 fi
 
 # Convert SRA files to fastq files
-cat "$PROJECT"_SraAccList.txt | parallel fasterq-dump "$IN"/{} -O "$OUT"
+cat "$PROJECT"_SraAccList.txt | parallel fasterq-dump "$IN"/{} --include-technical -S -O "$OUT"
 
 
 echo "###########################################################"
