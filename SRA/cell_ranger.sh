@@ -61,6 +61,27 @@ length=$(cat SRR21536717_1.fastq | awk -F'[=\" "]' '{print $4}' | head -1)
 # Redo with these settings because some biological reads were labeled as technical on sra (-S = --split-reads?)
 nohup cat PRJNA879764_SraAccList.txt | parallel fasterq-dump sra_files/{} --include-technical -S -O raw_reads3 &> logs/output_fq.out &
 
+# module load SRA-Toolkit/3.0.0-centos_linux64
+# module load parallel/20210722-GCCcore-11.2.0
+# cd PRJNA792835
+# mkdir logs
+# nohup cat PRJNA792835_SraAccList.txt | parallel fasterq-dump sra_files/{} --include-technical -S -O raw_reads3 &> logs/output_fq.out &
+# ps -xw
+
+# cd ..
+# PROJECT=PRJNA792835
+# cat "$PROJECT"/"$PROJECT"_SraAccList.txt | parallel gzip "$PROJECT"/raw_reads/{}*.fastq
+
+# cd PRJNA849410
+mkdir logs
+nohup cat PRJNA849410_SraAccList.txt | parallel fasterq-dump sra_files/{} --include-technical -S -O raw_reads3 &> logs/output_fq.out &
+# ps -xw
+# 206773
+
+# cd ..
+# PROJECT=PRJNA849410
+# cat "$PROJECT"/"$PROJECT"_SraAccList.txt | parallel gzip "$PROJECT"/raw_reads/{}*.fastq
+
 # Rename the reads that are only split into two
 # p = read accession number
 # Extract read length from header using awk -F'[=\" "]' - this means separate fields using = and " "
