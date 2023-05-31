@@ -48,6 +48,8 @@ then
 fi
 
 # Convert SRA files to fastq files
+# Include technical reads because cell ranger takes R1 and R2 as input and some runs only have R2 saved as a biological read in SRA
+# S for split?
 cat "$PROJECT"_SraAccList.txt | parallel fasterq-dump "$IN"/{} --include-technical -S -O "$OUT"
 
 
