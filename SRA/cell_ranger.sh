@@ -82,6 +82,40 @@ nohup cat PRJNA849410_SraAccList.txt | parallel fasterq-dump sra_files/{} --incl
 # PROJECT=PRJNA849410
 # cat "$PROJECT"/"$PROJECT"_SraAccList.txt | parallel gzip "$PROJECT"/raw_reads/{}*.fastq
 
+# Rerun for:
+# PRJNA153427 - only forward reads are provided (I've checked arrayexpress and ENA and they also just provide one file. header has /1 for all reads). we can't use this for cell bender. use expression matrix instead.
+# PRJNA484542
+# PRJNA879764
+
+# check raw read dirs 
+# for P in P*; do     echo "Processing project: $P";     cd "$P"/raw_reads;     ls ;               cd ../..; done
+
+# unzip all of these ^
+# first rename raw_reads dirs
+
+
+# Unzip for PRJNA849410
+nohup cat PRJNA849410_SraAccList.txt | parallel gzip raw_reads/{}*.fastq &  # done
+
+
+
+# cd PRJNA153427
+mkdir logs
+nohup cat PRJNA153427_SraAccList.txt | parallel fasterq-dump sra_files/{} --include-technical -S -O raw_reads3 &> logs/output_fq.out &  #done
+# ps -xw
+# unzip PRJNA153427
+
+cd PRJNA484542
+mkdir logs
+nohup cat PRJNA484542_SraAccList.txt | parallel fasterq-dump sra_files/{} --include-technical -S -O raw_reads3 &> logs/output_fq.out & # Done
+cd ..
+cd PRJNA879764
+mkdir logs
+nohup cat PRJNA879764_SraAccList.txt | parallel fasterq-dump sra_files/{} --include-technical -S -O raw_reads3 &> logs/output_fq.out &  #done 
+
+# unzip
+
+
 # Rename the reads that are only split into two
 # p = read accession number
 # Extract read length from header using awk -F'[=\" "]' - this means separate fields using = and " "
