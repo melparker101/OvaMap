@@ -13,7 +13,8 @@ There are 7 datasets:
 | PRJNA849410   | Choi10X      | 4                 | 8                | Y                         | Y                    |
 
 # 1. Extract
-Download fastq file
+Download fastq files.  
+PRJNA484542 only contains forward reads. We cannot use cell ranger on it and will have to use bam to fastq later. This leaves us with six 10X datasets to use.
 
 # 2. Rename fastq files
 Rename so that they match the fastq format for cell ranger.
@@ -21,23 +22,9 @@ As projects PRJNA766716, PRJNA792835, PRJNA879764 and PRJNA849410 contain multip
 ```
 
 projects=("PRJNA766716" "PRJNA792835" "PRJNA879764" "PRJNA849410")
+projects=("PRJNA766716" "PRJNA836755" "PRJNA792835" "PRJNA754050" "PRJNA879764" "PRJNA849410")
 
-for P in "${projects[@]}"
-do
-    echo "Processing project: $P"
-    cd "$P"/raw_reads
-    ls 
-    
-    while read p; do
-      if [[ -f "$p"_1.fastq.gz ]]; then
-        zcat "$p"_1.fastq.gz | head -1
-      elif [[ -f "$p".fastq.gz ]]; then
-        zcat "$p".fastq.gz | head -1
-      fi 
-    done <../"$P"_SraAccList.txt
-    
-    cd ../..
-done
+
 
 ##########
 for P in "${projects[@]}"
