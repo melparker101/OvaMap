@@ -43,49 +43,60 @@ done <../"$P"_SraAccList.txt
 # For all types of fastqs
 ##########################
 
-while read p; do
-  length=$(zcat "$p".fastq.gz | awk -F'[=\" "]' '{print $4}' | head -1)  # Length of single fastq reads
-  length1=$(zcat "$p"_1.fastq.gz | awk -F'[=\" "]' '{print $4}' | head -1)  # Length of read 1 multiple fastq reads
-  length2=$(zcat "$p"_2.fastq.gz | awk -F'[=\" "]' '{print $4}' | head -1)
-  length3=$(zcat "$p"_3.fastq.gz | awk -F'[=\" "]' '{print $4}' | head -1)
-  length4=$(zcat "$p"_4.fastq.gz | awk -F'[=\" "]' '{print $4}' | head -1)
-    # 1. One fastq file per run
-    if [[ -f "$p".fastq.gz ]]; then
-      echo Rerun fasterq-dump for "$p"
-      
-      # 2. Two fastq files per run (lengths 28 and ~150) - make sure the read with 28 is labelled as R1
-      elif [[ ! -f "$p"_3.fastq.gz && $length1 == 28 ]]; then
-        lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)  # Extract lane number from header
-        echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
-        mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz  # Rename fastq files
-        mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
-      
-      # 3. Two fastq files with length ~150 each (or at least >50) - it doesn't matter which is R1 and R2?
-      elif [[ ! -f "$p"_3.fastq.gz && $length1 >= 50 && $length2 >= 50 ]]; then
-        lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)
-        echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
-        mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
-        mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
-      
-      # 4. Three fastq files (lengths 8,28,~150)
-      elif [[ ! -f "$p"_4.fastq.gz && -f "$p"_3.fastq.gz && $length1 <= 10 && $length2 == 28 ]]; then
-        lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)
-        echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
-        mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
-        mv "$p"_3.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
-      
-      # 5. Four fastq files (I1, I2, R1 (L~28) and R2 (L>50))
-      elif [[ -f "$p"_4.fastq.gz && $length3 == 28 && $length4 >=50 ]]
-        mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_I1_001.fastq.gz
-        mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_I2_001.fastq.gz
-        mv "$p"_3.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
-        mv "$p"_4.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
-      # Otherwise print message
-      else
-        echo "$p" was not renamed.
-      fi     
-done <../"$P"_SraAccList.txt
+cd "$P"/raw_reads
 
+##########################
+# Chat GPT
+
+while read -r p; do
+  length=$(zcat "$p".fastq.gz | awk -F'[=" "]' '{print $4}' | head -1)  # Length of single fastq reads
+  length1=$(zcat "$p"_1.fastq.gz | awk -F'[=" "]' '{print $4}' | head -1)  # Length of read 1 multiple fastq reads
+  length2=$(zcat "$p"_2.fastq.gz | awk -F'[=" "]' '{print $4}' | head -1)
+  length3=$(zcat "$p"_3.fastq.gz | awk -F'[=" "]' '{print $4}' | head -1)
+  length4=$(zcat "$p"_4.fastq.gz | awk -F'[=" "]' '{print $4}' | head -1)
+
+  # 1. One fastq file per run
+  if [[ -f "$p".fastq.gz ]]; then
+    echo "Rerun fasterq-dump for $p"
+
+  # 2. Two fastq files per run (lengths <=30 and ~150) - make sure the read with 28 is labelled as R1
+  elif [[ ! -f "$p"_3.fastq.gz && $length1 -le 30 ]]; then
+    lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)  # Extract lane number from header
+    echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
+    mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz  # Rename fastq files
+    mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
+
+  # 3. Two fastq files with length ~150 each (or at least >50) - it doesn't matter which is R1 and R2?
+  elif [[ ! -f "$p"_3.fastq.gz && $length1 -ge 50 && $length2 -ge 50 ]]; then
+    lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)
+    echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
+    mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
+    mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
+
+  # 4. Three fastq files (lengths <=10,<=30,~150)
+  elif [[ ! -f "$p"_4.fastq.gz && -f "$p"_3.fastq.gz && $length1 -le 10 && $length2 -le 30 ]]; then
+    lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)
+    echo "$p"_S1_L00"$lane"_R1_001.fastq.gz
+    mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_I1_001.fastq.gz
+    mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
+    mv "$p"_3.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
+
+  # 5. Four fastq files (I1, I2, R1 (L~28) and R2 (L>50))
+  elif [[ -f "$p"_4.fastq.gz && $length3 -le 30 && $length4 -ge 50 ]]; then
+    lane=$(zcat "$p"_1.fastq.gz | awk -F: '{print $4}' | head -1)
+    echo "$p"_S1_L00"$lane"_I1_001.fastq.gz
+    mv "$p"_1.fastq.gz "$p"_S1_L00"$lane"_I1_001.fastq.gz
+    mv "$p"_2.fastq.gz "$p"_S1_L00"$lane"_I2_001.fastq.gz
+    mv "$p"_3.fastq.gz "$p"_S1_L00"$lane"_R1_001.fastq.gz
+    mv "$p"_4.fastq.gz "$p"_S1_L00"$lane"_R2_001.fastq.gz
+
+  # Otherwise, print a message
+  else
+    echo "$p was not renamed."
+  fi
+done < ../"$P"_SraAccList.txt
+
+#############################
 ##########################
 # For reads split in 2 (lengths 28 and ~150)
 ##########################
