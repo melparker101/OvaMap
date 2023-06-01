@@ -2,15 +2,15 @@
 There are 7 datasets:
 
 ### 10X Datasets
-| Project acc.  | Dataset Name | Number of Samples | Number of runs   | Multiple runs per sample? |
-| :-----------: |:------------:|:-----------------:|:----------------:|:-------------------------:|
-| PRJNA766716   | Xu10X        | 5                 | 20               | Y                         |
-| PRJNA836755   | Jin10X       | 8                 | 8                | N                         |
-| PRJNA792835   | Guahmich10X  | 9                 | 10               | Y                         |
-| PRJNA754050   | Sood10X      | 1                 | 1                | N                         |
-| PRJNA484542   | Fan10X       | 31                | 31               | N                         |
-| PRJNA879764   | Fonseca10X   | 4                 | 11               | Y                         |
-| PRJNA849410   | Choi10X      | 4                 | 8                | Y                         |
+| Project acc.  | Dataset Name | Number of Samples | Number of runs   | Multiple runs per sample? | R1 and R2 availible? |
+| :-----------: |:------------:|:-----------------:|:----------------:|:-------------------------:|:--------------------:|
+| PRJNA766716   | Xu10X        | 5                 | 20               | Y                         | Y                    |
+| PRJNA836755   | Jin10X       | 8                 | 8                | N                         | Y                    |
+| PRJNA792835   | Guahmich10X  | 9                 | 10               | Y                         | Y                    |
+| PRJNA754050   | Sood10X      | 1                 | 1                | N                         | Y                    |
+| PRJNA484542   | Fan10X       | 31                | 31               | N                         | N                    |
+| PRJNA879764   | Fonseca10X   | 4                 | 11               | Y                         | Y                    |
+| PRJNA849410   | Choi10X      | 4                 | 8                | Y                         | Y                    |
 
 # 1. Extract
 Download fastq file
