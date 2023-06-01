@@ -12,12 +12,6 @@
 #_L00#_  represents lane number
 # mv  SRR8111691_1.fastq.gz SRR8111691_S1_L001_R1_001.fastq.gz
 # mv  SRR8111691_2.fastq.gz SRR8111691_S1_L001_R2_001.fastq.gz
-# mv  SRR8111692_1.fastq.gz SRR8111692_S1_L002_R1_001.fastq.gz
-# mv  SRR8111692_2.fastq.gz SRR8111692_S1_L002_R2_001.fastq.gz
-# mv  SRR8111693_1.fastq.gz SRR8111693_S1_L003_R1_001.fastq.gz
-# mv  SRR8111693_2.fastq.gz SRR8111693_S1_L003_R2_001.fastq.gz
-# mv  SRR8111694_1.fastq.gz SRR8111694_S1_L004_R1_001.fastq.gz
-# mv  SRR8111694_2.fastq.gz SRR8111694_S1_L004_R2_001.fastq.gz
 # https://bioinformaticsworkbook.org/dataAnalysis/RNA-Seq/Single_Cell_RNAseq/Chromium_Cell_Ranger.html#gsc.tab=0
 
 # read this https://kb.10xgenomics.com/hc/en-us/articles/115003802691-How-do-I-prepare-Sequence-Read-Archive-SRA-data-from-NCBI-for-Cell-Ranger-
@@ -84,7 +78,9 @@ nohup cat PRJNA849410_SraAccList.txt | parallel fasterq-dump sra_files/{} --incl
 
 # Rerun for:
 # PRJNA153427 - only forward reads are provided (I've checked arrayexpress and ENA and they also just provide one file. header has /1 for all reads). we can't use this for cell bender. use expression matrix instead.
-# PRJNA484542
+# https://www.ncbi.nlm.nih.gov/sra/docs/submitformats/#fastq-files
+# could do bam to fastq https://www.biostars.org/p/9556827/
+# PRJNA484542 - same with this
 # PRJNA879764
 
 # check raw read dirs 
@@ -114,6 +110,8 @@ mkdir logs
 nohup cat PRJNA879764_SraAccList.txt | parallel fasterq-dump sra_files/{} --include-technical -S -O raw_reads3 &> logs/output_fq.out &  #done 
 
 # unzip
+
+nohup cat PRJNA879764_SraAccList.txt | parallel gzip raw_reads/{}*.fastq &  # done
 
 
 # Rename the reads that are only split into two
