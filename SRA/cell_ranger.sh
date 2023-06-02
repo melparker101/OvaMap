@@ -35,7 +35,7 @@ echo "##########################################################"
 # 1. Write a new script
 ###################################
 
-if [[ -f run_cellranger.sh ]]; then
+if [[ ! -f run_cellranger.sh ]]; then
   echo '#!/bin/bash
 
   #SBATCH -A lindgren.prj
