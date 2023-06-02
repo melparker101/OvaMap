@@ -10,10 +10,10 @@
 
 #SBATCH -A lindgren.prj
 #SBATCH -p short
-#SBATCH -c 4
+#SBATCH -c 1
 #SBATCH -J cell_ranger
-#SBATCH -o logs/cell_ranger_project_%A_%a.out
-#SBATCH -e logs/cell_ranger_project_%A_%a.err
+#SBATCH -o logs/cellranger_project_%A_%a.out
+#SBATCH -e logs/cellranger_project_%A_%a.err
 #SBATCH -a 1-6
 
 #  Parallel environment settings 
@@ -42,8 +42,6 @@ if [[ ! -f run_cellranger.sh ]]; then
   #SBATCH -p short
   #SBATCH -c 4
   #SBATCH -J cell_ranger
-  #SBATCH -o logs/cell_ranger_sample_%A_%a.out
-  #SBATCH -e logs/cell_ranger_sample_%A_%a.err
 
   # Source .bashrc for the reference genome variable
   source ~/.bashrc
@@ -58,13 +56,13 @@ if [[ ! -f run_cellranger.sh ]]; then
   FASTQ=raw_reads
   SAMPLE=$(sed "${SLURM_ARRAY_TASK_ID}q;d" "$INDEX")
 
-  if [ !-d cellranger_count ]; then
+  if [ ! -d cellranger_count ]; then
     mkdir -p cellranger;
   fi
   cd cellranger
 
   # Run cellranger count
-  cellranger count --id run_count_"$PROJECT" \
+  cellranger count --id run_count_"$SAMPLE" \
                    --transcriptome "$REF" \
                    --fastqs ../"$PROJECT"/"$FASTQ" \
                    --sample "$SAMPLE"
@@ -82,18 +80,31 @@ fi
 # 2. Call the new script
 ###################################
 
+echo PWD: "$PWD"
+
 # Set project number
 index=("PRJNA766716" "PRJNA836755" "PRJNA792835" "PRJNA754050" "PRJNA879764" "PRJNA849410")
-PROJECT=${index[$SLURM_ARRAY_TASK_ID]}
+
+echo "SLURM_ARRAY_TASK_ID: $SLURM_ARRAY_TASK_ID"
+
+# The array index starts at 0, so minus 1
+project_index=$((SLURM_ARRAY_TASK_ID - 1))
+PROJECT=${index[$project_index]}
+
+echo PROJECT: "$PROJECT"
 
 # Index file containing a list of samples for a particular project
 INDEX="$PROJECT"/"$PROJECT"_SraAccList.txt
 
+echo INDEX: "$INDEX"
+
 # Number of array scripts to send off
-NSAMPLES=$(wc -l "$INDEX" | awk '{print $1}')  
+NSAMPLES=$(wc -l < "$INDEX")
+
+echo NSAMPLES: "$NSAMPLES"
 
 # Submit the new script file to Slurm with the project number as the first argument
-sbatch run_cellranger.sh --array=1-"$NSAMPLES" $PROJECT
+sbatch --array=1-"$NSAMPLES" --output=logs/cell_ranger_sample_%A_%a.out --error=logs/cellranger_sample_%A_%a.err runcellranger.sh $PROJECT
 
                  
 echo "###########################################################"
