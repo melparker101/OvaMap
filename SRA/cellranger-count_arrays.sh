@@ -42,6 +42,7 @@ if [[ "$SLURM_ARRAY_TASK_ID" == "" ]]; then
   exec sbatch --array=1-"$NLINE" "$0" "$1"
 fi
 
+source ~/.bashrc
 
 # Load cellranger
 module load CellRanger/7.1.0
@@ -50,7 +51,7 @@ module load CellRanger/7.1.0
 # Define variables
 REF=refdata-gex-GRCh38-2020-A
 FASTQ=raw_reads
-SAMPLE=$(sed "${SLURM_ARRAY_TASK_ID}"'q;d' "$INDEX")
+SAMPLE=$(sed "${SLURM_ARRAY_TASK_ID}q;d" "$INDEX")
 
 
 if [ !-d cellranger_count ]; then
