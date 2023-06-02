@@ -9,8 +9,8 @@
 #SBATCH -p short
 #SBATCH -c 4
 #SBATCH -J cell_ranger
-#SBATCH -o logs/output.out
-#SBATCH -e logs/error.err
+#SBATCH -o logs/cell_ranger_%a.out
+#SBATCH -e logs/cell_ranger_%a.err
 #SBATCH -a 1-6
 
 #  Parallel environment settings 
@@ -40,8 +40,8 @@ module load CellRanger/7.1.0
 
 # --sample $READ excluded as we want to use all (S1)
 # Run cellranger to align and quantify
-cellranger count --id run_count_"$PROJECT" --transcriptome ../"$REF"/refdata-gex-GRCh38-2020-A.tar.gz \
-                 --fastqs "$PROJECT"/raw_reads  \
+cellranger count --id run_count_"$PROJECT" --transcriptome "$REF"/refdata-gex-GRCh38-2020-A.tar.gz \
+                 --fastqs "$PROJECT"/raw_reads
                 
 
 echo "###########################################################"
