@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ----------------------------------------------------------
-# Array script inception...
+# Nested array scripts
 # Array scripts per project (n=6)
 # Each array script per project calls another array script for the number of samples in that project
 # It then maps in-house IVF ovary RNA-seq data to a reference genome using cell ranger
