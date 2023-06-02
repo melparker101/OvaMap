@@ -12,8 +12,8 @@
 #SBATCH -p short
 #SBATCH -c 1
 #SBATCH -J cell_ranger
-#SBATCH -o logs/cellranger_project_%A_%a.out
-#SBATCH -e logs/cellranger_project_%A_%a.err
+#SBATCH -o logs/cellranger_project_%a.out
+#SBATCH -e logs/cellranger_project_%a.err
 #SBATCH -a 1-6
 
 #  Parallel environment settings 
@@ -40,7 +40,6 @@ if [[ ! -f run_cellranger.sh ]]; then
 
   #SBATCH -A lindgren.prj
   #SBATCH -p short
-  #SBATCH -c 4
   #SBATCH -J cell_ranger
 
   # Source .bashrc for the reference genome variable
@@ -57,9 +56,10 @@ if [[ ! -f run_cellranger.sh ]]; then
   SAMPLE=$(sed "${SLURM_ARRAY_TASK_ID}q;d" "$INDEX")
 
   if [ ! -d cellranger_count ]; then
-    mkdir -p cellranger;
+    mkdir -p cellranger_count;
   fi
-  cd cellranger
+
+  cd cellranger_count
 
   # Run cellranger count
   cellranger count --id run_count_"$SAMPLE" \
@@ -104,7 +104,7 @@ NSAMPLES=$(wc -l < "$INDEX")
 echo NSAMPLES: "$NSAMPLES"
 
 # Submit the new script file to Slurm with the project number as the first argument
-sbatch --array=1-"$NSAMPLES" --output=logs/cell_ranger_sample_%A_%a.out --error=logs/cellranger_sample_%A_%a.err runcellranger.sh $PROJECT
+sbatch --array=1-"$NSAMPLES" --output=logs/cell_ranger_sample_%A_%a.out --error=logs/cellranger_sample_%A_%a.err --cpus-per-task=4 run_cellranger.sh $PROJECT
 
                  
 echo "###########################################################"
