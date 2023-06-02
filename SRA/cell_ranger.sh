@@ -12,8 +12,8 @@
 #SBATCH -p short
 #SBATCH -c 4
 #SBATCH -J cell_ranger
-#SBATCH -o logs/cell_ranger_%a.out
-#SBATCH -e logs/cell_ranger_%a.err
+#SBATCH -o logs/cell_ranger_%A_%a.out
+#SBATCH -e logs/cell_ranger_%A_%a.err
 #SBATCH -a 1-6
 
 #  Parallel environment settings 
