@@ -10,3 +10,5 @@ SRA fastq files were downloaded for six 10Xgenomics datasets: PRJNA766716, PRJNA
 4. Run cell ranger
  - download reference: download_cellrange_ref.sh
  - run cell ranger array scripts: cell_ranger.sh
+
+The aim is to create count data as input to this script: https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R
