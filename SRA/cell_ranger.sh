@@ -74,7 +74,7 @@ if [[ -f run_cellranger.sh ]]; then
   echo "###########################################################"
   exit 0
 
-  ' > tmp_script.sh
+  ' > run_cellranger.sh
 
 fi
 
