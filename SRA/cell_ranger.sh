@@ -32,51 +32,54 @@ echo "Started at: "`date`
 echo "##########################################################"
 
 ###################################
-# 1. Write a temporary script
+# 1. Write a new script
 ###################################
 
-echo '#!/bin/bash
+if [[ -f run_cellranger.sh ]]; then
+  echo '#!/bin/bash
 
-#SBATCH -A lindgren.prj
-#SBATCH -p short
-#SBATCH -c 4
-#SBATCH -J cell_ranger
-#SBATCH -o logs/cell_ranger_sample_%A_%a.out
-#SBATCH -e logs/cell_ranger_sample_%A_%a.err
+  #SBATCH -A lindgren.prj
+  #SBATCH -p short
+  #SBATCH -c 4
+  #SBATCH -J cell_ranger
+  #SBATCH -o logs/cell_ranger_sample_%A_%a.out
+  #SBATCH -e logs/cell_ranger_sample_%A_%a.err
 
-# Source .bashrc for the reference genome variable
-source ~/.bashrc
+  # Source .bashrc for the reference genome variable
+  source ~/.bashrc
 
-# Load cellranger
-module load CellRanger/7.1.0
+  # Load cellranger
+  module load CellRanger/7.1.0
 
-# Define variables
-PROJECT=$1
-INDEX="$PROJECT"/"$PROJECT"_SraAccList.txt
-REF=$REF_GENOMES/homo_sapiens/10xgenomics/refdata-gex-GRCh38-2020-A
-FASTQ=raw_reads
-SAMPLE=$(sed "${SLURM_ARRAY_TASK_ID}q;d" "$INDEX")
+  # Define variables
+  PROJECT=$1
+  INDEX="$PROJECT"/"$PROJECT"_SraAccList.txt
+  REF=$REF_GENOMES/homo_sapiens/10xgenomics/refdata-gex-GRCh38-2020-A
+  FASTQ=raw_reads
+  SAMPLE=$(sed "${SLURM_ARRAY_TASK_ID}q;d" "$INDEX")
 
-if [ !-d cellranger_count ]; then
-  mkdir -p cellranger;
+  if [ !-d cellranger_count ]; then
+    mkdir -p cellranger;
+  fi
+  cd cellranger
+
+  # Run cellranger count
+  cellranger count --id run_count_"$PROJECT" \
+                   --transcriptome "$REF" \
+                   --fastqs ../"$PROJECT"/"$FASTQ" \
+                   --sample "$SAMPLE"
+
+  echo "###########################################################"
+  echo "Finished at: "`date`
+  echo "###########################################################"
+  exit 0
+
+  ' > tmp_script.sh
+
 fi
-cd cellranger
-
-# Run cellranger count
-cellranger count --id run_count_"$PROJECT" \
-                 --transcriptome "$REF" \
-                 --fastqs ../"$PROJECT"/"$FASTQ" \
-                 --sample "$SAMPLE"
-                 
-echo "###########################################################"
-echo "Finished at: "`date`
-echo "###########################################################"
-exit 0
-
-' > tmp_script.sh
 
 ###################################
-# 2. Call the temporary script
+# 2. Call the new script
 ###################################
 
 # Set project number
@@ -89,11 +92,8 @@ INDEX="$PROJECT"/"$PROJECT"_SraAccList.txt
 # Number of array scripts to send off
 NSAMPLES=$(wc -l "$INDEX" | awk '{print $1}')  
 
-# Submit the temporary script file to Slurm with the project number as the first argument
-sbatch tmp_script.sh --array=1-"$NSAMPLES" $PROJECT
-
-# Remove the temporary script file
-rm tmp_script.sh
+# Submit the new script file to Slurm with the project number as the first argument
+sbatch run_cellranger.sh --array=1-"$NSAMPLES" $PROJECT
 
                  
 echo "###########################################################"
