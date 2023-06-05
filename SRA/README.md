@@ -1,7 +1,10 @@
 1. Run cellranger count. Use the nested script cell_ranger.sh to run this on all projects and all of their runs. 
 ```bash
 cellranger_count/run_count_SRR15424680/outs/
+```
 
+Check that all output dirs were created:
+```bash
 projects=("PRJNA766716" "PRJNA836755" "PRJNA792835" "PRJNA754050" "PRJNA879764" "PRJNA849410")
 datasets=("Xu10X" "Jin10X" "Guahmich10X" "Sood10X" "Fonseca10X" "Choi10X")
   
