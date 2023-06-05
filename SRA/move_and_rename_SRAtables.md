@@ -28,7 +28,7 @@ do
 done
 ```
 
-                              
+The following code copies all of the cellranger counts over to the ovaMap directory                              
 ```bash
 projects=("PRJNA766716" "PRJNA836755" "PRJNA792835" "PRJNA754050" "PRJNA879764" "PRJNA849410")
 datasets=("Xu10X" "Jin10X" "Guahmich10X" "Sood10X" "Fonseca10X" "Choi10X")
