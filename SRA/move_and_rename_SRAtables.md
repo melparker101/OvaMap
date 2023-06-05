@@ -24,6 +24,6 @@ do
   echo "$P"/"$P"_SraRunTable.txt
   echo "$SraTableDir"/SraRunTable_"$D".txt
   echo ""
-  # cp "$P"/"$P"_SraRunTable.txt "$SraTableDir"/SraRunTable_"$D".txt
+  cp "$P"/"$P"_SraRunTable.txt "$SraTableDir"/SraRunTable_"$D".txt
 done
 ```
