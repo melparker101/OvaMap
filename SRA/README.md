@@ -14,22 +14,15 @@ do
     # Check if the project directory exists
         # Get the list of runs from the SraAccList.txt file
         runs=$(cat $project/${project}_SraAccList.txt)
-        
-    #echo "Project: $project, dataset: $dataset"
-    #echo "Runs:" 
-    #echo $runs
-  #echo ""
   
   for run in $runs
         do
-            # source_dir="cellranger_count/run_count_$run/outs/filtered_feature_bc_matrix"
             echo $run
             OUTS="cellranger_count/run_count_$run/outs/"
             echo $OUTS
             ls $OUTS
             echo ""  
     done
-
 done
 ```
 Check the runs that failed, e.g.: 
