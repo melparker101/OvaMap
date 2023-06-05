@@ -78,3 +78,4 @@ for(dataset_table in all_sra_tables){
   message("Saving dataset to",paste0(dataset_dir,"/",dataset_grep,"_seurat_raw.rds"))
   saveRDS(dataset_seurat,file = paste0(dataset_dir,"/",dataset_grep,"_seurat_raw.rds"))
 }
+
