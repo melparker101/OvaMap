@@ -7,7 +7,7 @@ PRJNA754050	Sood10X
 PRJNA879764	Fonseca10X
 PRJNA849410	Choi10X
 
-We want the format: SraRunTable_<dataset>.txt
+We want the format: SraRunTable_<dataset>.txt.
 
 ```bash
 # $PWD=//well/lindgren/users/mzf347/ovaMap/fastq
@@ -28,7 +28,7 @@ do
 done
 ```
 
-The following code copies all of the cellranger counts over to the ovaMap directory                              
+The following code copies all of the cellranger counts over to the ovaMap directory:                              
 ```bash
 projects=("PRJNA766716" "PRJNA836755" "PRJNA792835" "PRJNA754050" "PRJNA879764" "PRJNA849410")
 datasets=("Xu10X" "Jin10X" "Guahmich10X" "Sood10X" "Fonseca10X" "Choi10X")
@@ -64,4 +64,86 @@ do
         done
     fi
 done
+```
+  
+This is what the directory structure should look like afterwards:
+```
+$ pwd
+//well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata
+
+$ tree -L 2 .
+.
+|-- Choi10X
+|   |-- run_count_SRR19660773
+|   |-- run_count_SRR19660774
+|   |-- run_count_SRR19660775
+|   |-- run_count_SRR19660776
+|   |-- run_count_SRR19660777
+|   |-- run_count_SRR19660778
+|   |-- run_count_SRR19660779
+|   `-- run_count_SRR19660780
+|-- Fonseca10X
+|   |-- run_count_SRR21536711
+|   |-- run_count_SRR21536712
+|   |-- run_count_SRR21536716
+|   |-- run_count_SRR21536717
+|   |-- run_count_SRR21536727
+|   |-- run_count_SRR21536728
+|   |-- run_count_SRR21536765
+|   |-- run_count_SRR21536766
+|   |-- run_count_SRR21536767
+|   |-- run_count_SRR21536768
+|   `-- run_count_SRR21536769
+|-- Guahmich10X
+|   |-- run_count_SRR17351745
+|   |-- run_count_SRR17351746
+|   |-- run_count_SRR17351750
+|   |-- run_count_SRR17351751
+|   |-- run_count_SRR17351752
+|   |-- run_count_SRR17351753
+|   |-- run_count_SRR17351754
+|   |-- run_count_SRR19614723
+|   |-- run_count_SRR19614728
+|   `-- run_count_SRR19614729
+|-- Jin10X
+|   |-- run_count_SRR19153925
+|   |-- run_count_SRR19153926
+|   |-- run_count_SRR19153927
+|   |-- run_count_SRR19153928
+|   |-- run_count_SRR19153929
+|   |-- run_count_SRR19153930
+|   |-- run_count_SRR19153931
+|   `-- run_count_SRR19153932
+|-- SRAtables
+|   |-- SraRunTable_Choi10X.txt
+|   |-- SraRunTable_Fonseca10X.txt
+|   |-- SraRunTable_Guahmich10X.txt
+|   |-- SraRunTable_Jin10X.txt
+|   |-- SraRunTable_Sood10X.txt
+|   `-- SraRunTable_Xu10X.txt
+|-- Sood10X
+|   `-- run_count_SRR15424680
+`-- Xu10X
+    |-- run_count_SRR16093329
+    |-- run_count_SRR16093330
+    |-- run_count_SRR16093331
+    |-- run_count_SRR16093332
+    |-- run_count_SRR16093333
+    |-- run_count_SRR16093334
+    |-- run_count_SRR16093335
+    |-- run_count_SRR16093336
+    |-- run_count_SRR16093337
+    |-- run_count_SRR16093338
+    |-- run_count_SRR16093339
+    |-- run_count_SRR16093340
+    |-- run_count_SRR16093341
+    |-- run_count_SRR16093342
+    |-- run_count_SRR16093343
+    |-- run_count_SRR16093344
+    |-- run_count_SRR16093345
+    |-- run_count_SRR16093346
+    |-- run_count_SRR16093347
+    `-- run_count_SRR16093348
+
+65 directories, 6 files
 ```
