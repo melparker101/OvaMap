@@ -36,7 +36,7 @@ for(dataset_table in all_sra_tables){
     # sra_run_files = sra_files[grepl(sra_run,sra_files)]
     # load matrix
     if(any(grepl(".mtx",sra_run_files))){
-      sra_run_files = sra_run_files[grepl(matrix_type_regex,sra_run_files)]
+      # sra_run_files = sra_run_files[grepl(matrix_type_regex,sra_run_files)]
       # sra_run_counts <- scUtils::Read10xFormat(mtx = sra_run_files[grepl("matrix.mtx",sra_run_files)], cells = sra_run_files[grepl("barcodes",sra_run_files)], features = sra_run_files[grepl("features",sra_run_files)], feature.column = feature_column_idx)
       # //well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata/Xu10X/run_count_SRR16093329/outs/filtered_feature_bc_matrix/
 	  data_dir <- paste0(dataset_dir,"/run_count_",sra_run,"/outs/filtered_feature_bc_matrix/")
