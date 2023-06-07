@@ -5,7 +5,7 @@ Ovary dataset criterea for choosing the first set of datasets:
 - single cell or single nuclei ovary RNA-seq data
 - non-cancerous
 - healthy cells, e.g. not endometriosis (we can play around with this later)
-- >1000 cells (other datasets with a smaller number of cells can be added later, especially oocytes) 
+- \>1000 cells (other datasets with a smaller number of cells can be added later, especially oocytes) 
 - Droplet-based method (only droplet-based was used in hypoMap)
 - 10X Genomics (to set up cellranger pipeline)
 - Non-fetal ovary cells (this can be extended later)
