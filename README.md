@@ -1,14 +1,10 @@
 # OvaMap
 
-SRA fastq files were downloaded for six 10Xgenomics datasets: PRJNA766716, PRJNA836755, PRJNA792835, PRJNA754050, PRJNA879764, PRJNA849410.
+- **Aim:** to integrate single-cell RNA ovary datasets to build a transcriptomic ovary reference atlas. 
+- **Objective:** follow the methods used in [hypoMap](https://www.nature.com/articles/s42255-022-00657-y) using online and in-house ovary datasets. 
 
-1. Download the SRA data and metadata: extract_SRA_data.md. 
- - prefetch SRA files: no slurm script as this required internet connection. Run in parallel. (write a small script)
- - convert to fastq using fasterq-dump: fasterq-dump.sh
- - compress files: compress_fastq_files.sh
-2. Rename files ready for cellranger: cellranger.md (redo this script)
-4. Run cell ranger
- - download reference: download_cellrange_ref.sh
- - run cell ranger array scripts: cell_ranger.sh
+The hypoMap pipeline is split into three parts:
+1. [Preparing datasets](https://github.com/lsteuernagel/hypoMap_datasets) - downloading fastq files and SRA metadata, producing count matrices, and then creating Seurat objects from these.
+2. [scIntegration](https://github.com/lsteuernagel/scIntegration) - finding optimal hyperparameters for scVI to integrate datasets.
+3. [scHarmonization](https://github.com/lsteuernagel/scHarmonization) - harmonising annotations for the integrated single cell dataset.
 
-The aim is to create count data as input to this script: https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R
