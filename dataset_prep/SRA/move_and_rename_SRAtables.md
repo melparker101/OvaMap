@@ -1,11 +1,11 @@
 This code copies the SRA tables over to the ovaMap directory, renaming them to the format required for the raw_hypoMap_datasets.R script.
 
-PRJNA766716	Xu10X
-PRJNA836755	Jin10X
-PRJNA792835	Guahmich10X
-PRJNA754050	Sood10X
-PRJNA879764	Fonseca10X
-PRJNA849410	Choi10X
+- PRJNA766716	Xu10X
+- PRJNA836755	Jin10X
+- PRJNA792835	Guahmich10X
+- PRJNA754050	Sood10X
+- PRJNA879764	Fonseca10X
+- PRJNA849410	Choi10X
 
 We want the format: SraRunTable_<dataset>.txt.
 
