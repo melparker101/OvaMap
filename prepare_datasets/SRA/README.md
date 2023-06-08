@@ -1,5 +1,7 @@
 # OvaMap
 
+The aim is to create count data as input to this script: https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R
+
 SRA fastq files were downloaded for six 10Xgenomics datasets: 
 - PRJNA766716
 - PRJNA836755
@@ -8,19 +10,15 @@ SRA fastq files were downloaded for six 10Xgenomics datasets:
 - PRJNA879764
 - PRJNA849410
 
-1. Download the SRA data and metadata: extract_SRA_data.md. 
+### 1. Download the SRA data and metadata: extract_SRA_data.md. 
  - prefetch SRA files: no slurm script as this required internet connection. Run in parallel as this takes a while.
  - convert to fastq using fasterq-dump: fasterq-dump.sh
  - compress files: compress_fastq_files.sh
-2. Rename files ready for cellranger: cellranger.md (redo this script)
-4. Run cell ranger
+### 2. Rename files ready for cellranger: cellranger.md (redo this script)
+### 3. Run cell ranger
  - download reference: download_cellrange_ref.sh
- - run cell ranger array scripts: cell_ranger.sh
-
-The aim is to create count data as input to this script: https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R
-
-
-1. Run cellranger count. Use the nested script cell_ranger.sh to run this on all projects and all of their runs. 
+ - run cell ranger nested array scripts to run all runs from all projects in parallel: cell_ranger.sh
+ - The output files for run SRR15424680 will be in the directory below
 ```bash
 cellranger_count/run_count_SRR15424680/outs/
 ```
@@ -54,4 +52,11 @@ Check the runs that failed, e.g.:
 ```bash
 cat //well/lindgren/users/mzf347/ovaMap/fastq/cellranger_count/run_count_SRR17351745/_log
 ```
+### 4. Move cell ranger files and SRA tables to ovaMap directory
+- 
+
+
+
+
+
 
