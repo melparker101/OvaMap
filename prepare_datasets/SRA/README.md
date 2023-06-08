@@ -11,6 +11,7 @@ SRA fastq files were downloaded for six 10Xgenomics datasets:
 - PRJNA849410
 
 ### 1. Download the SRA data and metadata: extract_SRA_data.md. 
+ - Use [extract_SRA_data.md](https://github.com/melparker101/OvaMap/blob/main/prepare_datasets/SRA/extract_SRA_data.md) to extract the SRA data from relevant runs
  - prefetch SRA files: no slurm script as this required internet connection. Run in parallel as this takes a while.
  - convert to fastq using fasterq-dump: fasterq-dump.sh
  - compress files: compress_fastq_files.sh
