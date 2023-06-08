@@ -57,7 +57,7 @@ Check the runs that failed, e.g.:
 cat //well/lindgren/users/mzf347/ovaMap/fastq/cellranger_count/run_count_SRR17351745/_log
 ```
 ### 4. Move cell ranger files and SRA tables to ovaMap directory
-- 
+- [move_and_rename_SRAtables.md](https://github.com/melparker101/OvaMap/blob/main/prepare_datasets/SRA/move_and_rename_SRAtables.md)
 
 
 
