@@ -9,7 +9,7 @@ SRA fastq files were downloaded for six 10Xgenomics datasets:
 - PRJNA849410
 
 1. Download the SRA data and metadata: extract_SRA_data.md. 
- - prefetch SRA files: no slurm script as this required internet connection. Run in parallel. (write a small script)
+ - prefetch SRA files: no slurm script as this required internet connection. Run in parallel as this takes a while.
  - convert to fastq using fasterq-dump: fasterq-dump.sh
  - compress files: compress_fastq_files.sh
 2. Rename files ready for cellranger: cellranger.md (redo this script)
