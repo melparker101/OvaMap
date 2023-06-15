@@ -1,10 +1,9 @@
-| Dataset Name   | Year | Dataset Acc.    | BioProject                                                         | SRA Study                                                              | No. of Samples | Number of Cells | Number of cell types |
-| -------------- | ---- | --------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------- | -------------- | --------------- | -------------------- |
-| Fan10X         | 2019 | GSE118127       | [PRJNA484542](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA484542) | [SRP156350](https://trace.ncbi.nlm.nih.gov/Traces/sra?study=SRP156350) | 31             | 20,676          | 19                   |
-| Wagner10X      | 2020 | E-MTAB-8381     | PRJEB34869                                                         | \-                                                                     | 4              | 12,160          | 6                    |
-| Lengyel10X     | 2022 | EGAS00001006780 | \-                                                                 | \-                                                                     | 4              | 22,332          | 6                    |
-| LengyelDropSeq | 2022 | \-              | \-                                                                 | \-                                                                     | 2              | 3,802   | 6 |  
-
+| Dataset Name   | Year | Dataset Acc.    | BioProject                                                         | Paper URL                                                                                       | No. of Samples | Number of Cells | Number of cell types |
+| -------------- | ---- | --------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- | -------------- | --------------- | -------------------- |
+| Fan10X         | 2019 | GSE118127       | [PRJNA484542](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA484542) | [nature](https://www.nature.com/articles/s41467-019-11036-9)                                    | 31             | 20,676          | 19                   |
+| Wagner10X      | 2020 | E-MTAB-8381     | PRJEB34869                                                         | [nature](https://www.nature.com/articles/s41467-020-14936-3)                                    | 4              | 12,160          | 6                    |
+| Lengyel10X     | 2022 | EGAS00001006780 | \-                                                                 | [sciencedirect](https://www.sciencedirect.com/science/article/pii/S2211124722017302?via%3Dihub) | 4              | 22,332          | 6                    |
+| LengyelDropSeq | 2022 | \-              | \-                                                                 | [sciencedirect](https://www.sciencedirect.com/science/article/pii/S2211124722017302?via%3Dihub) | 2              | 3,802           | 6                    |
 # Group 2
 These are datasets where paired fastq reads are not readily availible, but other formats are that we can use.
 
