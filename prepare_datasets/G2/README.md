@@ -3,7 +3,7 @@
 | Fan10X         | 2019 | GSE118127       | [PRJNA484542](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA484542) | [SRP156350](https://trace.ncbi.nlm.nih.gov/Traces/sra?study=SRP156350) | 31             | 20,676          | 19                   |
 | Wagner10X      | 2020 | E-MTAB-8381     | PRJEB34869                                                         | \-                                                                     | 4              | 12,160          | 6                    |
 | Lengyel10X     | 2022 | EGAS00001006780 | \-                                                                 | \-                                                                     | 4              | 22,332          | 6                    |
-| LengyelDropSeq | 2022 | \-              | \-                                                                 | \-                                                                     | 2              | 3,802     
+| LengyelDropSeq | 2022 | \-              | \-                                                                 | \-                                                                     | 2              | 3,802   | 6 |  
 
 # Group 2
 These are datasets where paired fastq reads are not readily availible, but other formats are that we can use.
