@@ -7,7 +7,7 @@ SRA fastq files were downloaded for six 10Xgenomics datasets:
 
 | Project acc.  | Dataset Name | Paper URL | Number of Samples | Number of runs   | Number of cells | Number of cell types |
 | :-----------: |:------------:|:---------:|:-----------------:|:----------------:|:---------------:|:--------------------:|
-| PRJNA766716   | Xu10X        |           | 5                 | 20               | 26,060          |                      |
+| PRJNA766716   | Xu10X        | [www.ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9662915/)          | 5                 | 20               | 26,060          |                      |
 | PRJNA836755   | Jin10X       | [www.biorxiv.org](https://www.biorxiv.org/content/biorxiv/early/2022/05/19/2022.05.18.492547.full.pdf)          | 8                 | 8                | 42,568          | 8                    |
 | PRJNA792835   | Guahmich10X  |           | 9                 | 10               | 48,147          | 22, 6                |
 | PRJNA754050   | Sood10X      |           | 1                 | 1                |                 | 6                    |
