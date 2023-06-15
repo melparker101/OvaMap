@@ -8,6 +8,6 @@
 # Group 2
 These are datasets where paired fastq reads are not readily availible, but other formats are that we can use.
 
-- Fan10X dataset has fastq files availible, but they
+- Fan10X dataset has fastq files availible, but they were not split into R1 and R2, so could not go through the cellranger pipeline. We can use the BAM files instead and either use BAM2FASTQ then cellranger, or just quantify the BAM files. We can still use the SRA table as metadata.
 - Wagner10X has fastq files availible from ENI rather than SRA. These can be processed in a similar manner to the group 1 datasets, but the metadata will need curating manually.
 - For Lengyel10X and LengyelDropSeq, the raw fastq data is still not availible, but keep checking [EGA](https://ega-archive.org/datasets/EGAD00001010076) in case they add it. Instead, we can download the processed RDS or H5AD file from [cellxgene](https://cellxgene.cziscience.com/collections/d36ca85c-3e8b-444c-ba3e-a645040c6185) - this contains both the 10X and dropseq data lumped together. We can load this into a Seurats object and then filter to separate them into 2 datasets. Metadata will need adjusting manually. Use [cellxgene explorer](https://cellxgene.cziscience.com/e/d1207c81-7309-43a7-a5a0-f4283670b62b.cxg/) to visualise which samples come from which donors and techniques, etc.
