@@ -68,3 +68,102 @@ Preprocessing
 Doublet-detection
 Merging
 ```
+
+1. Prepare raw data
+Create a directory to store all of the raw ovary data in (Seurat objects (.rds) and SRA  metadata (.txt)). This directory will contain a subdirectory for each dataset and an 'SRAtables' directory containing all of their metadata tables.
+
+```bash
+# The path that hypoMap uses is /beegfs/scratch/bruening_scratch/lsteuernagel/data/hypoMap_rawdata/
+mkdir //well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata
+```
+Follow the workflow described in [https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1](Group 1) to:
+- Choose the first set of datasets
+- Download metadata and filter samples
+- Download fastq files and SRA table for the runs we want to use
+- Rename the fastq files ready for CellRanger
+- Run the CellRanger pipeline on fastq files to create output directories per run (including the raw counts)
+- Move over the CellRanger output and SRA tables to our ovaMap_rawdata directory 
+
+Once we completed these steps, we need to merge the count and metadata together in a Seurat object. We can do this using an edited version of the hypoMap script [raw_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R). The ovaMap edited script is: [edited_hypomap_scripts](https://github.com/melparker101/OvaMap/blob/main/edited_hypomap_scripts/raw_hypoMap_datasets.R).
+
+We will then have the following **ovaMap_rawdata** directory layout:
+```bash
+$ pwd
+//well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata
+
+$ tree -L 2 .
+.
+|-- Choi10X
+|   |-- run_count_SRR19660773
+|   |-- run_count_SRR19660774
+|   |-- run_count_SRR19660775
+|   |-- run_count_SRR19660776
+|   |-- run_count_SRR19660777
+|   |-- run_count_SRR19660778
+|   |-- run_count_SRR19660779
+|   `-- run_count_SRR19660780
+|-- Fonseca10X
+|   |-- run_count_SRR21536711
+|   |-- run_count_SRR21536712
+|   |-- run_count_SRR21536716
+|   |-- run_count_SRR21536717
+|   |-- run_count_SRR21536727
+|   |-- run_count_SRR21536728
+|   |-- run_count_SRR21536765
+|   |-- run_count_SRR21536766
+|   |-- run_count_SRR21536767
+|   |-- run_count_SRR21536768
+|   `-- run_count_SRR21536769
+|-- Guahmich10X
+|   |-- run_count_SRR17351745
+|   |-- run_count_SRR17351746
+|   |-- run_count_SRR17351750
+|   |-- run_count_SRR17351751
+|   |-- run_count_SRR17351752
+|   |-- run_count_SRR17351753
+|   |-- run_count_SRR17351754
+|   |-- run_count_SRR19614723
+|   |-- run_count_SRR19614728
+|   `-- run_count_SRR19614729
+|-- Jin10X
+|   |-- run_count_SRR19153925
+|   |-- run_count_SRR19153926
+|   |-- run_count_SRR19153927
+|   |-- run_count_SRR19153928
+|   |-- run_count_SRR19153929
+|   |-- run_count_SRR19153930
+|   |-- run_count_SRR19153931
+|   `-- run_count_SRR19153932
+|-- SRAtables
+|   |-- SraRunTable_Choi10X.txt
+|   |-- SraRunTable_Fonseca10X.txt
+|   |-- SraRunTable_Guahmich10X.txt
+|   |-- SraRunTable_Jin10X.txt
+|   |-- SraRunTable_Sood10X.txt
+|   `-- SraRunTable_Xu10X.txt
+|-- Sood10X
+|   `-- run_count_SRR15424680
+`-- Xu10X
+    |-- run_count_SRR16093329
+    |-- run_count_SRR16093330
+    |-- run_count_SRR16093331
+    |-- run_count_SRR16093332
+    |-- run_count_SRR16093333
+    |-- run_count_SRR16093334
+    |-- run_count_SRR16093335
+    |-- run_count_SRR16093336
+    |-- run_count_SRR16093337
+    |-- run_count_SRR16093338
+    |-- run_count_SRR16093339
+    |-- run_count_SRR16093340
+    |-- run_count_SRR16093341
+    |-- run_count_SRR16093342
+    |-- run_count_SRR16093343
+    |-- run_count_SRR16093344
+    |-- run_count_SRR16093345
+    |-- run_count_SRR16093346
+    |-- run_count_SRR16093347
+    `-- run_count_SRR16093348
+
+65 directories, 6 files
+```
