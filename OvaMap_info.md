@@ -33,6 +33,9 @@ See this [singularity](https://carpentries-incubator.github.io/singularity-intro
 # Add a shell variable to ~/.bashrc for the singularity directory
 SIF=//well/lindgren/users/mzf347/singularity
 
+# Add this line to ~/.bash_profile
+export SINGULARITY_CACHEDIR=/well/lindgren/users/mzf347/singularity/cache
+
 # Run this from the ovaMap directory. The R_test.sh script should be contained here
 # Use the -B argument to bind the pwd to the container
 singularity exec \
@@ -84,86 +87,21 @@ Follow the workflow described in [https://github.com/melparker101/OvaMap/tree/ma
 - Run the CellRanger pipeline on fastq files to create output directories per run (including the raw counts)
 - Move over the CellRanger output and SRA tables to our ovaMap_rawdata directory 
 
-Once we completed these steps, we need to merge the count and metadata together in a Seurat object. We can do this using an edited version of the hypoMap script [raw_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R). The ovaMap edited script is: [edited_hypomap_scripts](https://github.com/melparker101/OvaMap/blob/main/edited_hypomap_scripts/raw_hypoMap_datasets.R).
+Once we completed these steps, we need to merge the count and metadata together in a Seurat object. We can do this using an edited version of the hypoMap script [raw_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R). The ovaMap edited script is: [edited_hypomap_scripts](https://github.com/melparker101/OvaMap/blob/main/edited_hypomap_scripts/raw_hypoMap_datasets.R). This script does not use the docker/singularity image.
 
-We will then have the following **ovaMap_rawdata** directory layout:
-```bash
-$ pwd
-//well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata
+Each dataset will then have a Seurat object. For example, the 10Genomics Choi et al. dataset will have the Seurat object
+`//well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata/Choi10X/Choi10X_seurat_raw.rds`.
 
-$ tree -L 2 .
-.
-|-- Choi10X
-|   |-- run_count_SRR19660773
-|   |-- run_count_SRR19660774
-|   |-- run_count_SRR19660775
-|   |-- run_count_SRR19660776
-|   |-- run_count_SRR19660777
-|   |-- run_count_SRR19660778
-|   |-- run_count_SRR19660779
-|   `-- run_count_SRR19660780
-|-- Fonseca10X
-|   |-- run_count_SRR21536711
-|   |-- run_count_SRR21536712
-|   |-- run_count_SRR21536716
-|   |-- run_count_SRR21536717
-|   |-- run_count_SRR21536727
-|   |-- run_count_SRR21536728
-|   |-- run_count_SRR21536765
-|   |-- run_count_SRR21536766
-|   |-- run_count_SRR21536767
-|   |-- run_count_SRR21536768
-|   `-- run_count_SRR21536769
-|-- Guahmich10X
-|   |-- run_count_SRR17351745
-|   |-- run_count_SRR17351746
-|   |-- run_count_SRR17351750
-|   |-- run_count_SRR17351751
-|   |-- run_count_SRR17351752
-|   |-- run_count_SRR17351753
-|   |-- run_count_SRR17351754
-|   |-- run_count_SRR19614723
-|   |-- run_count_SRR19614728
-|   `-- run_count_SRR19614729
-|-- Jin10X
-|   |-- run_count_SRR19153925
-|   |-- run_count_SRR19153926
-|   |-- run_count_SRR19153927
-|   |-- run_count_SRR19153928
-|   |-- run_count_SRR19153929
-|   |-- run_count_SRR19153930
-|   |-- run_count_SRR19153931
-|   `-- run_count_SRR19153932
-|-- SRAtables
-|   |-- SraRunTable_Choi10X.txt
-|   |-- SraRunTable_Fonseca10X.txt
-|   |-- SraRunTable_Guahmich10X.txt
-|   |-- SraRunTable_Jin10X.txt
-|   |-- SraRunTable_Sood10X.txt
-|   `-- SraRunTable_Xu10X.txt
-|-- Sood10X
-|   `-- run_count_SRR15424680
-`-- Xu10X
-    |-- run_count_SRR16093329
-    |-- run_count_SRR16093330
-    |-- run_count_SRR16093331
-    |-- run_count_SRR16093332
-    |-- run_count_SRR16093333
-    |-- run_count_SRR16093334
-    |-- run_count_SRR16093335
-    |-- run_count_SRR16093336
-    |-- run_count_SRR16093337
-    |-- run_count_SRR16093338
-    |-- run_count_SRR16093339
-    |-- run_count_SRR16093340
-    |-- run_count_SRR16093341
-    |-- run_count_SRR16093342
-    |-- run_count_SRR16093343
-    |-- run_count_SRR16093344
-    |-- run_count_SRR16093345
-    |-- run_count_SRR16093346
-    |-- run_count_SRR16093347
-    `-- run_count_SRR16093348
+We can now proceed with the hypoMap processing pipeline...
 
-65 directories, 6 files
-```
+### Edit and use the hypoMap datasets pipeline
+Copy and edit the [execute_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/execute_hypoMap_datasets.R). 
+
+Change:
+- singularity_path to `//well/lindgren/users/mzf347/singularity/r_scvi_docker_v2_v9.sif`.
+- `param_path = //well/lindgren/users/mzf347/ovaMap/slurm/ovaMap_v2_params/` - where to store temporary json's with params for jobs:
+- `log_path = //well/lindgren/users/mzf347/ovaMap/slurm/ovaMap_v2_slurmlogs/` - where to save log files --> use this path in the slurm.sh files!
+- This script sources a "R/functions.R" file containing the functions that are required.
+- Dataset names
+- Go through the script and find anything else that needs changing!
+
