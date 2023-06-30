@@ -1,4 +1,4 @@
-# Extracting SRA data: reads and metadata
+# Extracting SRA Data: Reads and Metadata
 
 ## 0. Workflow
 - Download the SRA metadata tables using EDirect (official NCBI software)
