@@ -3,9 +3,11 @@ This code copies the SRA tables over to the ovaMap directory, renaming them to t
 - PRJNA766716	Xu10X
 - PRJNA836755	Jin10X
 - PRJNA792835	Guahmich10X
-- PRJNA754050	Sood10X
+- PRJNA754050	LaFargue10X 
 - PRJNA879764	Fonseca10X
 - PRJNA849410	Choi10X
+
+Note: Sood10X has changed to LaFargue10X. This page needs updating.
 
 We want the format: SraRunTable_<dataset>.txt.
 
