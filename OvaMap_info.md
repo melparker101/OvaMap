@@ -70,7 +70,7 @@ Follow the hypoMap pipeline for [Prepare datasets](https://github.com/lsteuernag
 
 The process for downloading the data is as follows (For more information see the [G1/README.md](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1) file):
 
-1.Download the SRA data and metadata
+1. Download the SRA data and metadata
 
 - Download the SRA metadata tables using EDirect (official NCBI software)
 - Also download the SRA metadata tables using pysradb (these include extra columns we need for filtering)
