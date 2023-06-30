@@ -67,7 +67,7 @@ cat //well/lindgren/users/mzf347/ovaMap/fastq/cellranger_count/run_count_SRR1735
 - [move_and_rename_SRAtables.md](https://github.com/melparker101/OvaMap/blob/main/prepare_datasets/G1/move_and_rename_SRAtables.md)
 
 ### 5. Create seurat objects
-HypoMap wrote a script to take the cellranger output and SRA tables and combine them in a Seurat object for each run. The edited version of the hypoMap script for use with our data is [raw_hypoMap_datasets.R](https://github.com/melparker101/OvaMap/blob/main/edited_hypomap_scripts/raw_hypoMap_datasets.R).
+HypoMap wrote a script to take the cellranger output and SRA tables and combine them in a Seurat object for each run. The edited version of the hypoMap script for use with our data is [raw_hypoMap_datasets.R](https://github.com/melparker101/OvaMap/blob/main/edited_hypomap_scripts/raw_hypoMap_datasets.R). These Seurat objects will be used as input for the first hypoMap pipeline (data preparation).
 
 
 
