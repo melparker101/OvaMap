@@ -5,8 +5,8 @@
 - Also download the SRA metadata tables using pysradb (these include extra columns we need for filtering)
 - Filter pysradb metadata tables
 - Prefetch SRA files in rescomp (we need an internet connection)
-- Convert to fastq using fasterq-dump
 - Reformat SRA tables for later use
+- Convert to fastq using fasterq-dump
 - Compress fastq files
 
 ## 1. Set up
