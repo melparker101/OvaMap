@@ -26,7 +26,7 @@ Use [extract_SRA_data.md](https://github.com/melparker101/OvaMap/blob/main/prepa
  - **Compress files**: [compress_fastq_files.sh](https://github.com/melparker101/OvaMap/blob/main/prepare_datasets/SRA/compress_fastq_files.sh). Although fastq-dump has a compression flag, fasterq does not - do this manually afterwards.
 ### 2. Rename files ready for cellranger
  - Use [rename_fastq_files.sh](https://github.com/melparker101/OvaMap/blob/main/prepare_datasets/SRA/rename_fastq_files.sh). Different runs have different length reads. Some runs split the reads into 2 (R1,R2), some into 3 (I1), and some into 4 (I2). This script accounts for these.
-### 3. Run cell ranger
+### 3. Run cellranger
  - Download reference for cellranger: [download_cellrange_ref.sh].(https://github.com/melparker101/OvaMap/blob/main/prepare_datasets/SRA/download_cellrange_ref.sh).
  - Run cell ranger nested array scripts to run all runs from all projects in parallel: [cellranger.sh](https://github.com/melparker101/OvaMap/blob/main/prepare_datasets/SRA/cellranger.sh).
  - The output files for run SRR15424680 will be in the directory below:
