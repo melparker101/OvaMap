@@ -72,8 +72,8 @@ The process for downloading the data is as follows (For more information see the
 
 1. Download the SRA data and metadata
 2. Rename files ready for cellranger
-3. Run cell ranger
-4. Move cell ranger files and SRA tables to ovaMap directory
+3. Run cellranger
+4. Move cellranger files and SRA tables to ovaMap directory
 5. Create Seurat objects using cellranger output counts and metadata
 
 Once the data is all downloaded, processed with CellRanger and organised into the relevant directories, use the [execute_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/execute_hypoMap_datasets.R) hypoMap script. Info from their github:
