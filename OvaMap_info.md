@@ -59,18 +59,45 @@ exit
 Start with the [Group 1](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1) set of datasets. These are appropriate datasets where R1 and R2 fastq files and SRA metadata tables can be downloaded from SRA.
 
 ### Prepare datasets
-Follow the hypoMap pipeline for [Prepare datasets](https://github.com/lsteuernagel/hypoMap_datasets) with these six Group 1 datasets. 
-Once the data is all downloaded, processed with CellRanger and organised into the relevant directories, try to use the [execute_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/execute_hypoMap_datasets.R) hypoMap script. Info from their github:
+Follow the hypoMap pipeline for [Prepare datasets](https://github.com/lsteuernagel/hypoMap_datasets) with the six Group 1 datasets below. 
 
-```
+- Xu10X
+- Jin10X
+- Guahmich10X
+- LaFargue10X
+- Fonseca10X
+- Choi10X
+
+The process for downloading the data is as follows (For more information see the [G1/README.md](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1) file):
+
+1.Download the SRA data and metadata
+
+- Download the SRA metadata tables using EDirect (official NCBI software)
+- Also download the SRA metadata tables using pysradb (these include extra columns we need for filtering)
+- Filter pysradb metadata tables
+- Prefetch SRA files in rescomp (we need an internet connection)
+- Convert to fastq using fasterq-dump
+- Reformat SRA tables for later use
+- Compress fastq files
+
+2. Rename files ready for cellranger
+
+3. Run cell ranger
+
+4. Move cell ranger files and SRA tables to ovaMap directory
+  
+5. Create Seurat objects using cellranger output counts and metadata
+
+Once the data is all downloaded, processed with CellRanger and organised into the relevant directories, use the [execute_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/execute_hypoMap_datasets.R) hypoMap script. Info from their github:
+
 Execute processing pipeline
 The core script to execute the slurm jobs is "R/execute_hypoMap_datasets.R" which consists of 4 steps:
 
-Load input data overview and parameters
-Preprocessing
-Doublet-detection
-Merging
-```
+1. Load input data overview and parameters
+2. Preprocessing
+3. Doublet-detection
+4. Merging
+
 
 1. Prepare raw data
 Create a directory to store all of the raw ovary data in (Seurat objects (.rds) and SRA  metadata (.txt)). This directory will contain a subdirectory for each dataset and an 'SRAtables' directory containing all of their metadata tables.
@@ -104,4 +131,12 @@ Change:
 - This script sources a "R/functions.R" file containing the functions that are required.
 - Dataset names
 - Go through the script and find anything else that needs changing!
+
+## 3. Add in the other datasets
+Group 2 datasets do not have SRA paired read fastq files and SRA metadata availible. However, they could be good datasets to add in! More information in the [G2/README.md file](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G2). I haven't started working on these yet, but the markdown file has information on where to get the data from.
+
+- Fan10X
+- Wagner10X
+- Lengyel10X
+- LengyelDropSeq
 
