@@ -16,7 +16,7 @@ SRA fastq files were downloaded for six 10Xgenomics datasets:
 
 Sood10X has changed to LaFargue10X
 
-### 1. Download the SRA data and metadata: extract_SRA_data.md. 
+### 1. Download the SRA data and metadata
 Use [extract_SRA_data.md](https://github.com/melparker101/OvaMap/blob/main/prepare_datasets/G1/extract_SRA_data.md) to extract the SRA data from relevant runs.
  - First, download the SRA metadata tables. Download the metadata tables officially using EDirect software from NCBI to use later, but also download tables using pysradb to obtain extra metadata columns required for filtering.
  - Filter pysradb metadata tables (more detail about each dataset in the md file). We can then use the run column from these filtered tables to choose which fastq files to download.
