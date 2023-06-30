@@ -71,21 +71,9 @@ Follow the hypoMap pipeline for [Prepare datasets](https://github.com/lsteuernag
 The process for downloading the data is as follows (For more information see the [G1/README.md](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1) file):
 
 1. Download the SRA data and metadata
-
-- Download the SRA metadata tables using EDirect (official NCBI software)
-- Also download the SRA metadata tables using pysradb (these include extra columns we need for filtering)
-- Filter pysradb metadata tables
-- Prefetch SRA files in rescomp (we need an internet connection)
-- Convert to fastq using fasterq-dump
-- Reformat SRA tables for later use
-- Compress fastq files
-
 2. Rename files ready for cellranger
-
 3. Run cell ranger
-
 4. Move cell ranger files and SRA tables to ovaMap directory
-  
 5. Create Seurat objects using cellranger output counts and metadata
 
 Once the data is all downloaded, processed with CellRanger and organised into the relevant directories, use the [execute_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/execute_hypoMap_datasets.R) hypoMap script. Info from their github:
