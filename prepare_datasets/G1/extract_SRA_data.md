@@ -1,4 +1,4 @@
-# 0. Workflow
+## 0. Workflow
 - Download the SRA metadata tables using EDirect (official NCBI software)
 - Also download the SRA metadata tables using pysradb (these include extra columns we need for filtering)
 - Filter pysradb metadata tables
@@ -7,7 +7,7 @@
 - Reformat SRA tables for later use
 - Compress fastq files
 
-# 1. Set up
+## 1. Set up
 Collect together a list of accession numbers for all of the projects where SRA data is availible for download.
 ```text
 PRJNA766716
@@ -41,7 +41,7 @@ Make a directory for each project accession number.
 while read p; do mkdir "$p"; done < prja_list.txt
 ```
 
-# 2. Download metadata file for each project accession
+## 2. Download metadata file for each project accession
 Install EDirect software from NCBI.
 ```bash
 cd ~
@@ -107,7 +107,7 @@ The output should look like this:
 `-- prja_list.txt
 ```
 
-# 3. Manually filter metadata tables to only contain samples/runs that we want
+## 3. Manually filter metadata tables to only contain samples/runs that we want
 The SRA Run tables we downloaded do not contain the 'tissue_type' column from the metadata table on the SRA website. There are a few ways to extract the extra data using the command line see [https://bioinformatics.stackexchange.com/questions/7027/how-to-extract-metadata-from-ncbis-short-read-archive-sra-for-a-few-runs](link). I found the easiest way was to use the package pysradb. Save the data in a tsv file to avoid formatting issues. Use the detailed arguement to ensure metadata for all runs are downloaded.
 
 | Project acc.  | Filtering Required? | Filtering requirements    | Total runs after filtering |
@@ -406,7 +406,7 @@ sra_table <- sra_table[sra_table$LibraryStrategy %like% "RNA",]
 # Write to file, replacing the original
 data.table::fwrite(sra_table, paste0(prjna,"_SraRunTable.txt"), sep='\t')
 ```
-# 4. Prefetch SRA data
+## 4. Prefetch SRA data
 Download SRA files for each project; do this in parallel (split into 15 parallel jobs). This requires internet connection. Use the Rscript format_sra_tables.R to make sure all SRA metadata tables are in the correct format.
 ```bash
 # pwd = fastq
@@ -487,7 +487,7 @@ for f in P*; do vdb-validate "$f"/sra_files/*/ &>> vdb_all.out; done &
 grep "err" vdb_all.out
 ```
 
-# 5. Create fastq files using fasterq-dump
+## 5. Create fastq files using fasterq-dump
 Internet connection is not necessary, so log into an interactive node on slurm. Fasterq-dump does not allow you to input a list of SRA numbers.
 ```bash
 # Load modules
@@ -517,7 +517,7 @@ for f in PR*; do
   done <"$f"/"$f"_SraAccList.txt
 done
 ```
-# 6. Compress fastq files
+## 6. Compress fastq files
 Fasterq-dump has no compression argument - we will have to do this explicitly. This is really slow, so send off some array scripts.
 ```bash
 
