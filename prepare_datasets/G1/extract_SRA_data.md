@@ -1,3 +1,5 @@
+# Extracting SRA data: reads and metadata
+
 ## 0. Workflow
 - Download the SRA metadata tables using EDirect (official NCBI software)
 - Also download the SRA metadata tables using pysradb (these include extra columns we need for filtering)
