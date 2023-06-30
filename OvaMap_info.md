@@ -54,12 +54,47 @@ ls
 # Exit the shell
 exit
 ```
+## 2. Set up directory structure
+Basic directory structure:
+```bash
+|-- ovaMap
+|   |-- fastq
+|   `-- data
+|       |-- ovaMap_rawdata
+|       `-- ovaMap_v2_integration
+`   |-- slurm
+```
+- fastq: download the raw fastq data here
+- data: hypomap made this for the data. Move the cellranger outputs and SRA tables here.
+- slurm: hypomap made this directory
 
-## 2. Start with a subset of datasets that we can follow the hypoMap dataset pipeline with
+I also cloned the scIntegration directory here, but we don't need that yet.
+
+1. Prepare raw data
+Create a directory to store all of the raw ovary data in (Seurat objects (.rds) and SRA  metadata (.txt)). This directory will contain a subdirectory for each dataset and an 'SRAtables' directory containing all of their metadata tables.
+
+```bash
+# The path that hypoMap uses is /beegfs/scratch/bruening_scratch/lsteuernagel/data/hypoMap_rawdata/
+mkdir //well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata
+
+|-- ovaMap_rawdata
+|   |-- SRAtables
+|   |-- Choi10X
+|   |-- Xu10X
+|   |-- Jin10X
+|   |-- Guahmich10X
+|   |-- LaFargue10X
+|   |-- Fonseca10X
+`   `-- Choi10X
+```
+
+## 3. GROUP 1 - Start with a subset of datasets that we can follow the hypoMap dataset pipeline with
 Start with the [Group 1](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1) set of datasets. These are appropriate datasets where R1 and R2 fastq files and SRA metadata tables can be downloaded from SRA.
 
+We want to download all of the fastq files into //well/lindgren/users/mzf347/ovaMap/fastq
+
 ### Prepare datasets
-Follow the hypoMap pipeline for [Prepare datasets](https://github.com/lsteuernagel/hypoMap_datasets) with the six Group 1 datasets below. 
+We want to follow the hypoMap pipeline for [Prepare datasets](https://github.com/lsteuernagel/hypoMap_datasets) with the six Group 1 ovary datasets I have chosen:
 
 - Xu10X
 - Jin10X
@@ -68,49 +103,16 @@ Follow the hypoMap pipeline for [Prepare datasets](https://github.com/lsteuernag
 - Fonseca10X
 - Choi10X
 
-The process for downloading the data is as follows (For more information see the [G1/README.md](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1) file):
+First, download the data. The process for downloading the data is as follows (For more information see the [G1/README.md](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1) file):
 
 1. Download the SRA data and metadata
 2. Rename files ready for cellranger
-3. Run cellranger
-4. Move cellranger files and SRA tables to ovaMap directory
+3. Run cellranger to get counts
+4. Move cellranger files and SRA tables to ovaMap_rawdata directory
 5. Create Seurat objects using cellranger output counts and metadata
 
-Once the data is all downloaded, processed with CellRanger and organised into the relevant directories, use the [execute_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/execute_hypoMap_datasets.R) hypoMap script. Info from their github:
-
-Execute processing pipeline
-The core script to execute the slurm jobs is "R/execute_hypoMap_datasets.R" which consists of 4 steps:
-
-1. Load input data overview and parameters
-2. Preprocessing
-3. Doublet-detection
-4. Merging
-
-
-1. Prepare raw data
-Create a directory to store all of the raw ovary data in (Seurat objects (.rds) and SRA  metadata (.txt)). This directory will contain a subdirectory for each dataset and an 'SRAtables' directory containing all of their metadata tables.
-
-```bash
-# The path that hypoMap uses is /beegfs/scratch/bruening_scratch/lsteuernagel/data/hypoMap_rawdata/
-mkdir //well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata
-```
-Follow the workflow described in [https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G1](Group 1) to:
-- Choose the first set of datasets
-- Download metadata and filter samples
-- Download fastq files and SRA table for the runs we want to use
-- Rename the fastq files ready for CellRanger
-- Run the CellRanger pipeline on fastq files to create output directories per run (including the raw counts)
-- Move over the CellRanger output and SRA tables to our ovaMap_rawdata directory 
-
-Once we completed these steps, we need to merge the count and metadata together in a Seurat object. We can do this using an edited version of the hypoMap script [raw_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R). The ovaMap edited script is: [edited_hypomap_scripts](https://github.com/melparker101/OvaMap/blob/main/edited_hypomap_scripts/raw_hypoMap_datasets.R). This script does not use the docker/singularity image.
-
-Each dataset will then have a Seurat object. For example, the 10Genomics Choi et al. dataset will have the Seurat object
-`//well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata/Choi10X/Choi10X_seurat_raw.rds`.
-
-We can now proceed with the hypoMap processing pipeline...
-
 ### Edit and use the hypoMap datasets pipeline
-Copy and edit the [execute_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/execute_hypoMap_datasets.R). 
+Once we completed these steps, we need to merge the count and metadata together in a Seurat object. We can do this using an edited version of the hypoMap script [raw_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/raw_hypoMap_datasets.R). Copy and edit this:
 
 Change:
 - singularity_path to `//well/lindgren/users/mzf347/singularity/r_scvi_docker_v2_v9.sif`.
@@ -120,6 +122,30 @@ Change:
 - Dataset names
 - Go through the script and find anything else that needs changing!
 
+This script does not use the docker/singularity image.
+
+The ovaMap edited script is: [edited_hypomap_scripts](https://github.com/melparker101/OvaMap/blob/main/edited_hypomap_scripts/raw_hypoMap_datasets.R).
+
+### Create Seurat objects
+Run [edited_hypomap_scripts](https://github.com/melparker101/OvaMap/blob/main/edited_hypomap_scripts/raw_hypoMap_datasets.R). This will create the Seurat objects and store them with the cellranger output files in the data/ovaMap_rawdata directory Each dataset will then have a Seurat object. For example, the 10Genomics Choi et al. dataset will have the Seurat object
+`//well/lindgren/users/mzf347/ovaMap/data/ovaMap_rawdata/Choi10X/Choi10X_seurat_raw.rds`.
+
+We can now proceed with the hypoMap data processing pipeline... Once the data is all downloaded, processed with CellRanger and organised into the relevant directories, use the [execute_hypoMap_datasets.R](https://github.com/lsteuernagel/hypoMap_datasets/blob/main/R/execute_hypoMap_datasets.R) hypoMap script. Info from their github:
+
+### Execute processing pipeline
+The core script to execute the slurm jobs is "R/execute_hypoMap_datasets.R" which consists of 4 steps:
+
+1. Load input data overview and parameters
+2. Preprocessing
+3. Doublet-detection
+4. Merging
+
+### scIntegration
+Find optimal hyperparamers for the machine-learning integration method: scVI. 
+
+### scHarmonization
+Run scVI using the optimal hyperparameters and then add harmonised annotations.
+
 ## 3. Add in the other datasets
 Group 2 datasets do not have SRA paired read fastq files and SRA metadata availible. However, they could be good datasets to add in! More information in the [G2/README.md file](https://github.com/melparker101/OvaMap/tree/main/prepare_datasets/G2). I haven't started working on these yet, but the markdown file has information on where to get the data from.
 
@@ -127,4 +153,3 @@ Group 2 datasets do not have SRA paired read fastq files and SRA metadata availi
 - Wagner10X
 - Lengyel10X
 - LengyelDropSeq
-
