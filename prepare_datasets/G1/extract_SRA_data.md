@@ -6,7 +6,7 @@
 - Convert to fastq using fasterq-dump
 - Reformat SRA tables for later use
 - Compress fastq files
-- 
+
 # 1. Set up
 Collect together a list of accession numbers for all of the projects where SRA data is availible for download.
 ```text
